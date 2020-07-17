@@ -89,6 +89,12 @@ TogglesPanel::TogglesPanel(SettingsWindow *parent) : ListWidget(parent) {
       "Use vision path predictions to estimate the appropiate speed to drive through turns ahead.",
       "../assets/offroad/icon_road.png",
     },
+    {
+      "HandsOnWheelMonitoring",
+      "Enable Hands on Wheel Monitoring",
+      "Monitor and alert when driver is not keeping the hands on the steering wheel.",
+      "../assets/offroad/icon_openpilot.png",
+    },
 #ifdef ENABLE_MAPS
     {
       "NavSettingTime24h",

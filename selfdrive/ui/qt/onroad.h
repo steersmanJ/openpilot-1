@@ -22,6 +22,8 @@ class OnroadHud : public QWidget {
 
   Q_PROPERTY(bool isBraking MEMBER isBraking NOTIFY valueChanged);
   Q_PROPERTY(bool speedTrapHelper MEMBER speedTrapHelper NOTIFY valueChanged);
+  Q_PROPERTY(bool showHowAlert MEMBER showHowAlert NOTIFY valueChanged);
+  Q_PROPERTY(bool howWarning MEMBER howWarning NOTIFY valueChanged);
 
   Q_PROPERTY(bool showVTC MEMBER showVTC NOTIFY valueChanged);
   Q_PROPERTY(QString vtcSpeed MEMBER vtcSpeed NOTIFY valueChanged);
@@ -42,6 +44,7 @@ private:
 
   QPixmap engage_img;
   QPixmap dm_img;
+  QPixmap how_img;
   const int radius = 192;
   const int img_size = (radius / 2) * 1.5;
   QString speed;
@@ -55,6 +58,8 @@ private:
 
   bool isBraking = false;
   bool speedTrapHelper = false;
+  bool showHowAlert = false;
+  bool howWarning = false;
 
   bool showVTC = false;
   QString vtcSpeed;
