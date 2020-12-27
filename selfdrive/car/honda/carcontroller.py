@@ -61,19 +61,21 @@ def actuator_hystereses(brake, braking, brake_steady, v_ego, car_fingerprint):
   return brake, braking, brake_steady
 
 
-def brake_pump_hysteresis(apply_brake, apply_brake_last, last_pump_on_state, ts):
-  if (apply_brake > apply_brake_last):
+def brake_pump_hysteresis(apply_brake, apply_brake_last, last_pump_ts, ts):
+  pump_on = False
+
+  # reset pump timer if:
+  # - there is an increment in brake request
+  # - we are applying steady state brakes and we haven't been running the pump
+  #   for more than 20s (to prevent pressure bleeding)
+  if apply_brake > apply_brake_last or (ts - last_pump_ts > 20. and apply_brake > 0):
+    last_pump_ts = ts
+
+  # once the pump is on, run it for at least 0.2s
+  if ts - last_pump_ts < 0.2 and apply_brake > 0:
     pump_on = True
 
-  if (apply_brake == apply_brake_last):
-    pump_on = last_pump_on_state
-
-  if (apply_brake < apply_brake_last):
-    pump_on = False
-
-  last_pump_on_state = pump_on
-
-  return pump_on, last_pump_on_state
+  return pump_on, last_pump_ts
 
 
 def process_hud_alert(hud_alert):
@@ -105,7 +107,7 @@ class CarController():
     self.brake_last = 0.
     self.signal_last = 0.
     self.apply_brake_last = 0
-    self.last_pump_on_state = False
+    self.last_pump_ts = 0.
     self.packer = CANPacker(dbc_name)
 
     self.params = CarControllerParams(CP)
@@ -227,7 +229,7 @@ class CarController():
           apply_brake = int(clip(apply_brake * P.BRAKE_MAX, 0, P.BRAKE_MAX - 1))
           if not CS.out.cruiseState.enabled and not (CS.CP.pcmCruise and CS.accEnabled and CS.CP.minEnableSpeed > 0 and not CS.out.cruiseState.enabled):
             apply_brake = 0.
-          pump_on, self.last_pump_on_state = brake_pump_hysteresis(apply_brake, self.apply_brake_last, self.last_pump_on_state, ts)
+          pump_on, self.last_pump_ts = brake_pump_hysteresis(apply_brake, self.apply_brake_last, self.last_pump_ts, ts)
           # Do NOT send the cancel command if we are using the pedal. Sending cancel causes the car firmware to
           # turn the brake pump off, and we don't want that. Stock ACC does not send the cancel cmd when it is braking.
 
