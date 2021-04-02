@@ -1,11 +1,12 @@
 from cereal import car
 from selfdrive.car import dbc_dict
+from common.params import Params
 
 Ecu = car.CarParams.Ecu
 VisualAlert = car.CarControl.HUDControl.VisualAlert
 
 class CarControllerParams():
-  ACCEL_MAX = 1.6
+  ACCEL_MAX = 3.2 if Params().get_bool('CommaPedalEnhancements') else 1.2
 
   def __init__(self, CP):
     self.BRAKE_MAX = 1024//4
@@ -22,10 +23,7 @@ class CarControllerParams():
     self.NIDEC_MAX_ACCEL_V = [0.5, 2.4, 1.4, 0.6]
     self.NIDEC_MAX_ACCEL_BP = [0.0, 4.0, 10., 20.]
 
-
-    self.BOSCH_ACCEL_LOOKUP_BP = [-1., 0., 0.6]
-    self.BOSCH_ACCEL_LOOKUP_V = [-3.5, 0., 2.]
-    self.BOSCH_GAS_LOOKUP_BP = [0., 0.6]
+    self.BOSCH_GAS_LOOKUP_BP = [0., 2.0]  # 2m/s^2
     self.BOSCH_GAS_LOOKUP_V = [0, 2000]
 
 
@@ -36,7 +34,11 @@ class CruiseButtons:
   CANCEL = 2
   MAIN = 1
 
-# See dbc files for info on values
+class CruiseSetting:
+  DISTANCE_ADJ = 3
+  LKAS_BUTTON = 1
+
+# See dbc files for info on values"
 VISUAL_HUD = {
   VisualAlert.none: 0,
   VisualAlert.fcw: 1,
@@ -1266,6 +1268,6 @@ SPEED_FACTOR = {
   CAR.HRV: 1.025,
 }
 
-OLD_NIDEC_LONG_CONTROL = set([CAR.ODYSSEY, CAR.ACURA_RDX, CAR.CRV, CAR.HRV])
+HONDA_NIDEC_ALT_PCM_ACCEL = set([CAR.ODYSSEY])
 HONDA_BOSCH = set([CAR.ACCORD, CAR.ACCORDH, CAR.CIVIC_BOSCH, CAR.CIVIC_BOSCH_DIESEL, CAR.CRV_5G, CAR.CRV_HYBRID, CAR.INSIGHT, CAR.ACURA_RDX_3G])
 HONDA_BOSCH_ALT_BRAKE_SIGNAL = set([CAR.ACCORD, CAR.CRV_5G, CAR.ACURA_RDX_3G])
