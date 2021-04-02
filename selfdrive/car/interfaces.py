@@ -35,6 +35,7 @@ class CarInterfaceBase():
     self.steering_unpressed = 0
     self.low_speed_alert = False
     self.silent_steer_warning = True
+    self.gear_warning = 0
 
     if CarState is not None:
       self.CS = CarState(CP)
@@ -119,9 +120,11 @@ class CarInterfaceBase():
       events.add(EventName.doorOpen)
     if cs_out.seatbeltUnlatched:
       events.add(EventName.seatbeltNotLatched)
-    if cs_out.gearShifter != GearShifter.drive and (extra_gears is None or
-       cs_out.gearShifter not in extra_gears):
-      events.add(EventName.wrongGear)
+    if cs_out.gearShifter != GearShifter.drive and cs_out.gearShifter not in extra_gears and not (cs_out.gearShifter == GearShifter.unknown and self.gear_warning < int(0.5/DT_CTRL)):
+      if cs_out.gearShifter == GearShifter.park:
+        events.add(EventName.silentWrongGear)
+      else:
+        events.add(EventName.wrongGear)
     if cs_out.gearShifter == GearShifter.reverse:
       events.add(EventName.reverseGear)
     if not cs_out.cruiseState.available:
@@ -139,8 +142,14 @@ class CarInterfaceBase():
     if cs_out.cruiseState.nonAdaptive:
       events.add(EventName.wrongCruiseMode)
     if cs_out.brakeHoldActive and self.CP.openpilotLongitudinalControl:
-      events.add(EventName.brakeHold)
+      if (cs_out.lkasEnabled):
+        cs_out.disengageByBrake = True
+      if (cs_out.cruiseState.enabled):
+        events.add(EventName.brakeHold)
+      else:
+        events.add(EventName.silentBrakeHold)
 
+    self.gear_warning = self.gear_warning + 1 if cs_out.gearShifter == GearShifter.unknown else 0
 
     # Handle permanent and temporary steering faults
     self.steering_unpressed = 0 if cs_out.steeringPressed else self.steering_unpressed + 1
@@ -161,7 +170,12 @@ class CarInterfaceBase():
     # e.g. Chrysler does not spam the resume button yet, so resuming with gas is handy. FIXME!
     if (self.op_params.get('disengage_on_gas') and cs_out.gasPressed and (not self.CS.out.gasPressed) and cs_out.vEgo > gas_resume_speed) or \
        (cs_out.brakePressed and (not self.CS.out.brakePressed or not cs_out.standstill)):
-      events.add(EventName.pedalPressed)
+      if (cs_out.lkasEnabled):
+        cs_out.disengageByBrake = True
+      if (cs_out.cruiseState.enabled):
+        events.add(EventName.pedalPressed)
+      else:
+        events.add(EventName.silentPedalPressed)
 
     # we engage when pcm is active (rising edge)
     if pcm_enable:
