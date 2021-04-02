@@ -111,6 +111,7 @@ struct CarEvent @0x9b1657f34caf3ad3 {
     highCpuUsage @105;
 
     driverMonitorLowAccDEPRECATED @68;
+
     radarCanErrorDEPRECATED @15;
     radarCommIssueDEPRECATED @67;
     gasUnavailableDEPRECATED @3;
@@ -142,8 +143,17 @@ struct CarEvent @0x9b1657f34caf3ad3 {
     timebombBypassing @111;
     timebombBypassed @112;
     mapdAlert @113;
+
+    #mapd
     speedLimitActive @114;
     speedLimitValueChange @115;
+
+    #spektor
+    manualLongitudinalRequired @116;
+    silentPedalPressed @117;
+    silentButtonEnable @118;
+    silentBrakeHold @119;
+    silentWrongGear @120;
   }
 }
 
@@ -214,6 +224,15 @@ struct CarState {
   stopSteering @38 :Bool; # timebomb - stopSteering
   engineRPM @39 :Float32;
   cruiseActualEnabled @40 :Bool;
+
+  # spektor
+  lkasEnabled @41 :Bool;
+  leftBlinkerOn @42 :Bool;
+  rightBlinkerOn @43 :Bool;
+  disengageByBrake @44 :Bool;
+  automaticLaneChange @45 :Bool;
+  belowLaneChangeSpeed @46 :Bool;
+  accEnabled @47 :Bool;
 
   struct WheelSpeeds {
     # optional wheel speeds
