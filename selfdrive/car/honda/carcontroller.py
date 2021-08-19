@@ -74,7 +74,7 @@ def process_hud_alert(hud_alert):
 
 HUDData = namedtuple("HUDData",
                      ["pcm_accel", "v_cruise",  "car",
-                     "lanes", "fcw", "acc_alert", "steer_required", "dashed_lanes"])
+                     "lanes", "fcw", "acc_alert", "steer_required", "dist_lines", "dashed_lanes"])
 
 
 class CarController():
@@ -214,7 +214,7 @@ class CarController():
             can_sends.append(create_gas_command(self.packer, apply_gas, idx))
 
     hud = HUDData(int(pcm_accel), int(round(hud_v_cruise)), hud_car,
-                  hud_lanes, fcw_display, acc_alert, steer_required, CS.lkMode)
+                  hud_lanes, fcw_display, acc_alert, steer_required, CS.read_distance_lines, CS.lkMode)
 
     # Send dashboard UI commands.
     if (frame % 10) == 0:
