@@ -105,6 +105,7 @@ class CarController():
     self.braking = False
     self.brake_steady = 0.
     self.brake_last = 0.
+    self.signal_last = 0.
     self.apply_brake_last = 0
     self.last_pump_ts = 0.
     self.packer = CANPacker(dbc_name)
@@ -132,8 +133,7 @@ class CarController():
     # *** rate limit after the enable check ***
     self.brake_last = rate_limit(brake, self.brake_last, -2., DT_CTRL)
 
-    # vehicle hud display, wait for one update from 10Hz 0x304 msg
-    if enabled:
+    if enabled and CS.out.cruiseState.enabled:
       if hud_show_car:
         hud_car = 2
       else:
@@ -143,13 +143,16 @@ class CarController():
 
     fcw_display, steer_required, acc_alert = process_hud_alert(hud_alert)
 
+    cur_time = frame * DT_CTRL
+    if (CS.leftBlinkerOn or CS.rightBlinkerOn):
+      self.signal_last = cur_time
+
+    lkas_active = enabled and not CS.steer_not_allowed and CS.lkasEnabled and ((CS.automaticLaneChange and not CS.belowLaneChangeSpeed) or ((not ((cur_time - self.signal_last) < 1) or not CS.belowLaneChangeSpeed) and not (CS.leftBlinkerOn or CS.rightBlinkerOn)))
 
     # **** process the car messages ****
 
     # steer torque is converted back to CAN reference (positive when steering right)
     apply_steer = int(interp(-actuators.steer * P.STEER_MAX, P.STEER_LOOKUP_BP, P.STEER_LOOKUP_V))
-
-    lkas_active = enabled and not CS.steer_not_allowed
 
     # Send CAN commands.
     can_sends = []
@@ -192,7 +195,7 @@ class CarController():
 
     # wind brake from air resistance decel at high speed
     wind_brake = interp(CS.out.vEgo, [0.0, 2.3, 35.0], [0.001, 0.002, 0.15])
-    if CS.CP.enableGasInterceptor or if CS.CP.carFingerprint in OLD_NIDEC_LONG_CONTROL:
+    if CS.CP.enableGasInterceptor or CS.CP.carFingerprint in OLD_NIDEC_LONG_CONTROL:
       #pcm_speed = pcm_speed
       pcm_accel = int(clip(pcm_accel, 0, 1) * 0xc6)
     else:
@@ -237,6 +240,8 @@ class CarController():
 
         if CS.CP.carFingerprint in HONDA_BOSCH:
           apply_gas = interp(accel, P.BOSCH_GAS_LOOKUP_BP, P.BOSCH_GAS_LOOKUP_V)
+          if not CS.out.cruiseState.enabled:
+            apply_gas = 0.
           if dragonconf.dpAtl and dragonconf.dpAtlOpLong and not CS.out.cruiseActualEnabled:
             apply_gas = 0
             apply_accel = 0
@@ -245,6 +250,8 @@ class CarController():
         else:
           apply_brake = clip(self.brake_last - wind_brake, 0.0, 1.0)
           apply_brake = int(clip(apply_brake * P.BRAKE_MAX, 0, P.BRAKE_MAX - 1))
+          if not CS.out.cruiseState.enabled:
+            apply_brake = 0.
           if dragonconf.dpAtl and dragonconf.dpAtlOpLong and not CS.out.cruiseActualEnabled:
             apply_brake = 0
           pump_on, self.last_pump_ts = brake_pump_hysteresis(apply_brake, self.apply_brake_last, self.last_pump_ts, ts)
@@ -258,12 +265,14 @@ class CarController():
             # send exactly zero if apply_gas is zero. Interceptor will send the max between read value and apply_gas.
             # This prevents unexpected pedal range rescaling
             apply_gas = clip(gas_mult * actuators.gas, 0., 1.)
-            if dragonconf.dpAtl and dragonconf.dpAtlOpLong and not CS.out.cruiseActualEnabled:
+            if not CS.out.cruiseState.enabled:
+              apply_gas = 0.
+            if dragonconf.dpAtl and dragonconf.dpAtlOpLong and CS.out.cruiseActualEnabled:
               apply_gas = 0
             can_sends.append(create_gas_command(self.packer, apply_gas, idx))
 
-    hud = HUDData(int(pcm_accel), int(round(hud_v_cruise)), hud_car,
-                  hud_lanes, fcw_display, acc_alert, steer_required)
+    hud = HUDData(int(pcm_accel), (int(round(hud_v_cruise)) if hud_car != 0 else 255), hud_car,
+                  hud_show_lanes and lkas_active, fcw_display, acc_alert, steer_required, CS.lkasEnabled and not lkas_active)
 
     # Send dashboard UI commands.
     if not dragonconf.dpAtl and (frame % 10) == 0:

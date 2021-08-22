@@ -135,26 +135,26 @@ struct CarEvent @0x9b1657f34caf3ad3 {
     #dp
     preLaneChangeLeftALC @106;
     preLaneChangeRightALC @107;
-    manualSteeringRequiredBlinkersOn @109;
-    leadCarMoving @110;
+    manualSteeringRequiredBlinkersOn @108;
+    leadCarMoving @109;
 
     # timebomb assist
-    timebombWarn @111;
-    timebombBypassing @112;
-    timebombBypassed @113;
-    mapdAlert @114;
+    timebombWarn @110;
+    timebombBypassing @111;
+    timebombBypassed @112;
+    mapdAlert @113;
     
     #mapd
-    speedLimitActive @115;
-    speedLimitValueChange @116;
+    speedLimitActive @114;
+    speedLimitValueChange @115;
     
     #spektor
-    manualSteeringRequired @117;
-    manualLongitudinalRequired @118;
-    silentPedalPressed @110;
-    silentButtonEnable @120;
-    silentBrakeHold @121;
-    silentWrongGear @122;
+    manualSteeringRequired @116;
+    manualLongitudinalRequired @117;
+    silentPedalPressed @118;
+    silentButtonEnable @119;
+    silentBrakeHold @120;
+    silentWrongGear @121;
   }
 }
 
