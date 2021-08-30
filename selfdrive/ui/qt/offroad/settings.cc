@@ -79,7 +79,14 @@ TogglesPanel::TogglesPanel(QWidget *parent) : QWidget(parent) {
                                 "When above 30mph or 48km/h, openpilot will attempt a lane change when the blinkers are activated instead of waiting for the driver to nudge the wheel. Be cautious when using this feature.",
                                 "../assets/offroad/icon_openpilot.png",
                                 this));
-                                
+
+  toggles.append(new ParamControl("SmoothStop",
+                                "Eliminate jerk at complete stop (Beta)",
+                                "Openpilot tends to apply the brakes too quickly when coming to a full stop resulting in a jerk that isn't smooth. This parameter should smoothen that out. Tested on the civic but use caution as larger vehicles may not hold correctly at a stop.",
+                                "../assets/offroad/icon_openpilot.png",
+                                this));
+
+
   toggles.append(new ParamControl("TorqueLimitSound",
                                 "Steering Torque Limit Audible Alert",
                                 "Enabling this will make a sound effect when the car uses up all of the available steering torque.",

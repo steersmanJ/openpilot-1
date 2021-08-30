@@ -47,10 +47,6 @@ class CarInterfaceBase():
     return 1.
 
   @staticmethod
-  def compute_gb(accel, speed):
-    raise NotImplementedError
-
-  @staticmethod
   def get_params(candidate, fingerprint=gen_empty_fingerprint(), car_fw=None):
     raise NotImplementedError
 
@@ -73,15 +69,11 @@ class CarInterfaceBase():
     ret.pcmCruise = True     # openpilot's state is tied to the PCM's cruise state on most cars
     ret.minEnableSpeed = -1. # enable is done by stock ACC, so ignore this
     ret.steerRatioRear = 0.  # no rear steering, at least on the listed cars aboveA
-    ret.gasMaxBP = [0.]
-    ret.gasMaxV = [.5]       # half max brake
-    ret.brakeMaxBP = [0.]
-    ret.brakeMaxV = [1.]
     ret.openpilotLongitudinalControl = False
     ret.startAccel = 1.2
     ret.minSpeedCan = 0.3
-    ret.stoppingBrakeRate = 0.025 # brake_travel/s while trying to stop
-    ret.startingBrakeRate = 0.8 # brake_travel/s while releasing on restart
+    ret.stoppingDecelRate = 0.025 if Params().get_bool('SmoothStop') else 0.8 # brake_travel/s while trying to stop
+    ret.startingAccelRate = 3.2 # brake_travel/s while releasing on restart
     ret.stoppingControl = True
     ret.longitudinalTuning.deadzoneBP = [0.]
     ret.longitudinalTuning.deadzoneV = [0.]
