@@ -655,7 +655,7 @@ class Controls:
 
     # 2018 Honda Civic Speed Offset
     if self.v_cruise_kph != 255:
-      controlsState.vCruise = controlsState.vCruise * 1.0076
+      controlsState.vCruise = controlsState.vCruise * 1.0050
 
     if self.joystick_mode:
       controlsState.lateralControlState.debugState = lac_log
