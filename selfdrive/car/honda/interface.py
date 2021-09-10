@@ -125,7 +125,7 @@ class CarInterface(CarInterfaceBase):
 
     # default longitudinal tuning for all hondas
     ret.longitudinalTuning.kpBP = [0., 5., 35.]
-    ret.longitudinalTuning.kpV = [3.6, 2.4, 2.1]
+    ret.longitudinalTuning.kpV = [3.6, 3.4, 3.2]
     ret.longitudinalTuning.kiBP = [0., 35.]
     ret.longitudinalTuning.kiV = [0.54, 0.36]
 
