@@ -866,7 +866,7 @@ EVENTS: Dict[int, Dict[str, Union[Alert, Callable[[Any, messaging.SubMaster, boo
     ET.PERMANENT: Alert(
       "Reverse\nGear",
       "",
-      AlertStatus.normal, AlertSize.full,
+      AlertStatus.userPrompt, AlertSize.full,
       Priority.LOWEST, VisualAlert.none, AudibleAlert.none, 0., 0., .2, creation_delay=0.5),
     ET.IMMEDIATE_DISABLE: ImmediateDisableAlert("Car is in reverse."),
     ET.NO_ENTRY: NoEntryAlert("Car is in reverse."),
