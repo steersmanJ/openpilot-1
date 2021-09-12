@@ -146,7 +146,7 @@ class Alert:
 class NoEntryAlert(Alert):
   def __init__(self, alert_text_2, audible_alert=AudibleAlert.none,
                visual_alert=VisualAlert.none, duration_hud_alert=2.):
-    super().__init__("Openpilot Standby", alert_text_2, AlertStatus.normal,
+    super().__init__("Openpilot Standby", alert_text_2, AlertStatus.userPrompt,
                      AlertSize.mid, Priority.LOW, visual_alert,
                      audible_alert, .4, duration_hud_alert, 3.)
 
@@ -223,7 +223,7 @@ def startup_fuzzy_fingerprint_alert(CP: car.CarParams, sm: messaging.SubMaster, 
   return Alert(
     "Welcome to Openpilot",
     f"To use Autosteer, press the lane-keep-assist button.",
-    AlertStatus.normal, AlertSize.mid,
+    AlertStatus.userPrompt, AlertSize.mid,
     Priority.LOWER, VisualAlert.none, AudibleAlert.none, 0., 0., 10.)
 
 
@@ -259,17 +259,17 @@ EVENTS: Dict[int, Dict[str, Union[Alert, Callable[[Any, messaging.SubMaster, boo
 
   EventName.startup: {
     ET.PERMANENT: Alert(
-      "Openpilot Initalized",
-      "Toggle Autosteer with the LKAS button.",
-      AlertStatus.normal, AlertSize.mid,
+      "Welcome to Openpilot",
+      "To use Autosteer, press the lane-keep-assist button.",
+      AlertStatus.userPrompt, AlertSize.mid,
       Priority.LOWER, VisualAlert.none, AudibleAlert.none, 0., 0., 10.),
   },
 
   EventName.startupMaster: {
     ET.PERMANENT: Alert(
-      "Openpilot Initalized",
-      "Toggle Autosteer with the LKAS button.",
-      AlertStatus.normal, AlertSize.mid,
+      "Welcome to Openpilot",
+      "To use Autosteer, press the lane-keep-assist button.",
+      AlertStatus.userPrompt, AlertSize.mid,
       Priority.LOWER, VisualAlert.none, AudibleAlert.none, 0., 0., 10.),
   },
 
@@ -416,7 +416,7 @@ EVENTS: Dict[int, Dict[str, Union[Alert, Callable[[Any, messaging.SubMaster, boo
       "KEEP EYES ON ROAD: Driver Distracted",
       "",
       AlertStatus.userPrompt, AlertSize.small,
-      Priority.LOW, VisualAlert.none, AudibleAlert.none, .0, .1, .1),
+      Priority.LOW, VisualAlert.none, AudibleAlert.none, .0, .0, .0),
   },
 
   EventName.promptDriverDistracted: {
@@ -429,7 +429,7 @@ EVENTS: Dict[int, Dict[str, Union[Alert, Callable[[Any, messaging.SubMaster, boo
 
   EventName.driverDistracted: {
     ET.WARNING: Alert(
-      "DISENGAGE IMMEDIATELY",
+      "DISENGAGE: PRESS MAIN BUTTON",
       "Driver Distracted",
       AlertStatus.critical, AlertSize.full,
       Priority.HIGH, VisualAlert.steerRequired, AudibleAlert.chimeWarningRepeat, .1, .1, .1),
@@ -481,33 +481,33 @@ EVENTS: Dict[int, Dict[str, Union[Alert, Callable[[Any, messaging.SubMaster, boo
 
   EventName.preLaneChangeLeft: {
     ET.WARNING: Alert(
-      "Auto Left Lane Change",
-      "",
+      "Automatic Left Lane Change",
+      "Check your surroundings",
       AlertStatus.userPrompt, AlertSize.mid,
       Priority.LOW, VisualAlert.none, AudibleAlert.none, .0, .1, .1, alert_rate=0.75),
   },
 
   EventName.preLaneChangeRight: {
     ET.WARNING: Alert(
-      "Auto Right Lane Change",
-      "",
-      AlertStatus.userPrompt, AlertSize.small,
+      "Automatic Right Lane Change",
+      "Check your surroundings",
+      AlertStatus.userPrompt, AlertSize.mid,
       Priority.LOW, VisualAlert.none, AudibleAlert.none, .0, .1, .1, alert_rate=0.75),
   },
 
   EventName.laneChangeBlocked: {
     ET.WARNING: Alert(
       "Car Detected in Blindspot",
-      "Monitor Other Vehicles",
+      "Check your surroundings",
       AlertStatus.userPrompt, AlertSize.mid,
       Priority.LOW, VisualAlert.none, AudibleAlert.none, .0, .1, .1),
   },
 
   EventName.laneChange: {
     ET.WARNING: Alert(
-      "Changing Lanes",
-      "",
-      AlertStatus.userPrompt, AlertSize.small,
+      "Automatically Changing Lanes",
+      "Check your surroundings",
+      AlertStatus.userPrompt, AlertSize.mid,
       Priority.LOW, VisualAlert.none, AudibleAlert.none, .0, .1, .1),
   },
 
