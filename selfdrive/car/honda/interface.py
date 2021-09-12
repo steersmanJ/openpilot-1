@@ -124,8 +124,8 @@ class CarInterface(CarInterfaceBase):
     ret.lateralTuning.pid.kf = 0.00006  # conservative feed-forward
 
     # default longitudinal tuning for all hondas
-    ret.longitudinalTuning.kpBP = [0., 5., 35.]
-    ret.longitudinalTuning.kpV = [3.6, 2.4, 2.1]
+    ret.longitudinalTuning.kpBP = [0., 11., 24., 37.] # 0, 25, 55, 85 mph, 
+    ret.longitudinalTuning.kpV = [1.2, 1.6, 1.8, 2.1]
     ret.longitudinalTuning.kiBP = [0., 35.]
     ret.longitudinalTuning.kiV = [0.54, 0.36]
 
