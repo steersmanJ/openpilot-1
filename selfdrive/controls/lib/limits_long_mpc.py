@@ -14,8 +14,8 @@ class LimitsLongitudinalMpc():
     self.last_cloudlog_t = 0.0
     self.ts = list(range(10))
     self.status = True
-    self.min_a = -3.2
-    self.max_a = 3.2
+    self.min_a = -1.6
+    self.max_a = 1.6
 
   def reset_mpc(self):
     self.libmpc = libmpc_py.libmpc
