@@ -242,11 +242,6 @@ class CarState(CarStateBase):
     self.engineRPM = 0
     self.dp_honda_kmh_display = Params().get_bool('dp_honda_kmh_display')
 
-    #honda TR buttons
-    self.trMode = 1
-    self.read_distance_lines_prev = 4
-    self.lead_distance = 255
-
   def update(self, cp, cp_cam, cp_body):
     ret = car.CarState.new_message()
 
@@ -256,7 +251,7 @@ class CarState(CarStateBase):
 
     # update prevs, update must run once per loop
     self.prev_cruise_buttons = self.cruise_buttons
-    self.prev_lead_distance = self.lead_distance
+    self.prev_cruise_setting = self.cruise_setting
 
     # ******************* parse out can *******************
     # TODO: find wheels moving bit in dbc
@@ -301,6 +296,7 @@ class CarState(CarStateBase):
     ret.steeringAngleDeg = cp.vl["STEERING_SENSORS"]["STEER_ANGLE"]
     ret.steeringRateDeg = cp.vl["STEERING_SENSORS"]["STEER_ANGLE_RATE"]
 
+    self.cruise_setting = cp.vl["SCM_BUTTONS"]["CRUISE_SETTING"]
     self.cruise_buttons = cp.vl["SCM_BUTTONS"]["CRUISE_BUTTONS"]
 
     ret.leftBlinker, ret.rightBlinker = self.update_blinker_from_stalk(
@@ -386,18 +382,6 @@ class CarState(CarStateBase):
       if ret.brake > 0.05:
         ret.brakePressed = True
 
-    # when user presses distance button on steering wheel
-    if self.cruise_setting == 3:
-      if cp.vl["SCM_BUTTONS"]["CRUISE_SETTING"] == 0:
-        self.trMode = (self.trMode + 1 ) % 4
-
-    self.prev_cruise_setting = self.cruise_setting
-    self.cruise_setting = cp.vl["SCM_BUTTONS"]['CRUISE_SETTING']
-    self.read_distance_lines = self.trMode + 1
-    if self.read_distance_lines != self.read_distance_lines_prev:
-      self.read_distance_lines_prev = self.read_distance_lines
-
-    # when user presses LKAS button on steering wheel
     if bool(main_on):
       if self.CP.enableGasInterceptor:
         if self.prev_cruise_buttons == 3: #set

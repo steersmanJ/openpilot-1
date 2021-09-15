@@ -233,9 +233,8 @@ struct CarState {
   automaticLaneChange @45 :Bool;
   belowLaneChangeSpeed @46 :Bool;
   accEnabled @47 :Bool;
-  readdistancelines @48 :Int16;
-  
- struct WheelSpeeds {
+
+  struct WheelSpeeds {
     # optional wheel speeds
     fl @0 :Float32;
     fr @1 :Float32;

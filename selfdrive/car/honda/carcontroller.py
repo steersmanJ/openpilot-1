@@ -75,7 +75,7 @@ def process_hud_alert(hud_alert):
 
 HUDData = namedtuple("HUDData",
                      ["pcm_accel", "v_cruise", "car",
-                     "lanes", "fcw", "acc_alert", "steer_required", "dist_lines", "dashed_lanes"])
+                     "lanes", "fcw", "acc_alert", "steer_required", "dashed_lanes"])
 
 
 class CarController():
@@ -272,7 +272,7 @@ class CarController():
             can_sends.append(create_gas_command(self.packer, apply_gas, idx))
 
     hud = HUDData(int(pcm_accel), (int(round(hud_v_cruise)) if hud_car != 0 else 255), hud_car,
-                  hud_show_lanes and lkas_active, fcw_display, acc_alert, steer_required, CS.read_distance_lines, CS.lkasEnabled and not lkas_active)
+                  hud_show_lanes and lkas_active, fcw_display, acc_alert, steer_required, CS.lkasEnabled and not lkas_active)
 
     # Send dashboard UI commands.
     if not dragonconf.dpAtl and (frame % 10) == 0:
