@@ -243,7 +243,7 @@ class CarState(CarStateBase):
     self.dp_honda_kmh_display = Params().get_bool('dp_honda_kmh_display')
 
     #honda TR buttons
-    self.trMode = 1
+    self.trMode = 0
     self.read_distance_lines_prev = 4
     self.lead_distance = 255
 
