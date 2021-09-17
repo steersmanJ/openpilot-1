@@ -107,7 +107,6 @@ DP - General:
 • Enable Log Service: Enabled   
 • Enable Uploader Service: Enabled   
 • Enable Athenad Service: Enabled   
-• Enable On-Road Dashcam: Enabled (your drives may stop uploading to connect.comma.ai if enabled due to storage)   
 • Enable Appd Service: Enabled     
 **Hardware - General:**   
 • Enable Hotspot On Boot: Disabled     
@@ -137,7 +136,7 @@ Enable Device Temp Check: Enabled
 Enable Max Ctrl Speed Check: Disabled    
      
 DP - UI:       
-• Display Mode: 2   
+• Display Mode: Leave at default
 • Screen Brightness: Auto   
 • Alert Volume: Auto   
 • Display Speed: Enabled   
@@ -148,7 +147,7 @@ DP - UI:
 • Display Max Speed: Enabled   
 • Display Driver Monitor Indicator: Enabled   
 • Display Side Info: Enabled   
-• Display Top Info Bar: Disabled   
+• Display Top Info Bar: Enabled
     
 DP - Cars:   
 • Keep everything disabled unless you have something specific to use, like a torque-modded civic   
