@@ -149,9 +149,9 @@ class CarInterface(CarInterfaceBase):
         # note: max request allowed is 4096, but request is capped at 3840 in firmware, so modifications result in 2x max
         ret.lateralParams.torqueBP, ret.lateralParams.torqueV = [[0, 2560, 8000], [0, 2560, 3840]]
         ret.lateralTuning.init('lqr')
-        ret.lateralTuning.lqr.scale = 1700
-        ret.lateralTuning.lqr.ki = 0.21
-        ret.lateralTuning.lqr.dcGain = 0.012
+        ret.lateralTuning.lqr.scale = 1200.0
+        ret.lateralTuning.lqr.ki = 0.1
+        ret.lateralTuning.lqr.dcGain = 0.06 # Personal note: 0.00223 corners too early, 0.012 not enough.
 
         ret.lateralTuning.lqr.a = [0., 1., -0.22619643, 1.21822268]
         ret.lateralTuning.lqr.b = [-1.92006585e-04, 3.95603032e-05]
