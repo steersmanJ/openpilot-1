@@ -436,9 +436,9 @@ class CarState(CarStateBase):
     signals = [
       ("FORCE", "PRE_COLLISION", 0),
       ("PRECOLLISION_ACTIVE", "PRE_COLLISION", 0),
-      ("SET_ME_X01", "LKAS_HUD", 0)
       #dp
       ("DISTANCE", "ACC_CONTROL", 0),
+      ("SET_ME_X01", "LKAS_HUD", 0)
     ]
     # dp-rsa
     # Include traffic singal signals.
