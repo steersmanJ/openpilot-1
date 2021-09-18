@@ -73,11 +73,6 @@ TogglesPanel::TogglesPanel(QWidget *parent) : QWidget(parent) {
                                   "In this mode openpilot will ignore lanelines and just drive how it thinks a human would.",
                                   "../assets/offroad/icon_road.png",
                                   this));
-  toggles.append(new ParamControl("LqrTune",
-                                  "Use LQR Tune",
-                                  "Use LQR tuning values.",
-                                  "../assets/offroad/icon_openpilot.png",
-                                  this));
   toggles.append(new ParamControl("LqrTuneGain22",
                                 "Use LQR Gain 22",
                                 "Use a medium gain for the LQR tune.",
