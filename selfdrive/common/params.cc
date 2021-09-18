@@ -225,13 +225,6 @@ std::unordered_map<std::string, uint32_t> keys = {
     {"Offroad_NvmeMissing", CLEAR_ON_MANAGER_START},
     {"ForcePowerDown", CLEAR_ON_MANAGER_START},
     {"JoystickDebugMode", CLEAR_ON_MANAGER_START | CLEAR_ON_IGNITION_OFF},
-    {"LqrTuneGain22", PERSISTENT},
-    {"LqrTuneGain23", PERSISTENT},
-    {"LqrTuneGain24", PERSISTENT},
-    {"LqrTuneGain25", PERSISTENT},
-    {"LqrTuneGain26", PERSISTENT},
-    {"LqrTuneGain27", PERSISTENT},
-    {"LqrTuneGain28", PERSISTENT},
 };
 
 } // namespace

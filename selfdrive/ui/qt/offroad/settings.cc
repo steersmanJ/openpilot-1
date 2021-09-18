@@ -73,41 +73,6 @@ TogglesPanel::TogglesPanel(QWidget *parent) : QWidget(parent) {
                                   "In this mode openpilot will ignore lanelines and just drive how it thinks a human would.",
                                   "../assets/offroad/icon_road.png",
                                   this));
-  toggles.append(new ParamControl("LqrTuneGain22",
-                                "Use LQR Gain 22",
-                                "Use a medium gain for the LQR tune.",
-                                "../assets/offroad/icon_openpilot.png",
-                                this));
-  toggles.append(new ParamControl("LqrTuneGain23",
-                                "Use LQR Gain 23",
-                                "Use a medium gain for the LQR tune.",
-                                "../assets/offroad/icon_openpilot.png",
-                                this));
-  toggles.append(new ParamControl("LqrTuneGain24",
-                                "Use LQR Gain 24",
-                                "Use a medium gain for the LQR tune.",
-                                "../assets/offroad/icon_openpilot.png",
-                                this));
-  toggles.append(new ParamControl("LqrTuneGain25",
-                                "Use LQR Gain 25",
-                                "Use a medium gain for the LQR tune.",
-                                "../assets/offroad/icon_openpilot.png",
-                                this));
-  toggles.append(new ParamControl("LqrTuneGain26",
-                                "Use LQR Gain 26",
-                                "Use a medium gain for the LQR tune.",
-                                "../assets/offroad/icon_openpilot.png",
-                                this));
-  toggles.append(new ParamControl("LqrTuneGain27",
-                                "Use LQR Gain 27",
-                                "Use a medium gain for the LQR tune.",
-                                "../assets/offroad/icon_openpilot.png",
-                                this));
-  toggles.append(new ParamControl("LqrTuneGain28",
-                                "Use LQR Gain 28",
-                                "Use a medium gain for the LQR tune.",
-                                "../assets/offroad/icon_openpilot.png",
-                                this));
 
 #ifdef ENABLE_MAPS
   toggles.append(new ParamControl("NavSettingTime24h",
