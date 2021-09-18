@@ -158,7 +158,8 @@ class CarInterface(CarInterfaceBase):
         ret.lateralTuning.lqr.c = [1., 0.]
         ret.lateralTuning.lqr.k = [-110.73572306, 451.22718255]
         ret.lateralTuning.lqr.l = [0.3233671, 0.3185757]
-        ret.lateralTuning.lqr.dcGain = 0.002837852961363602 # Personal note: 0.00223 corners too early, 0.012 not enough.
+        ret.lateralTuning.lqr.dcGain = 0.002537852961363602 
+        # Note: dcGain 0.00223(default) cuts corners too early, 0.0025 slightly early, and 0.0028 perfect but with less torque.
       else:
         ret.lateralParams.torqueBP, ret.lateralParams.torqueV = [[0, 2560], [0, 2560]]
         ret.lateralTuning.pid.kpV, ret.lateralTuning.pid.kiV = [[1.1], [0.33]]
