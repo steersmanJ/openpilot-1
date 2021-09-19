@@ -162,7 +162,7 @@ class CarController():
           pass # TODO: implement
         else:
           apply_gas = clip(actuators.gas, 0., 1.) ** 1.2
-          if not CS.out.cruiseState.enabled:
+          if not CS.out.cruiseState.enabled and not (CS.CP.minEnableSpeed > 0 and not CS.out.cruiseState.enabled):
             apply_gas = 0.
           apply_brake = int(clip(self.brake_last * P.BRAKE_MAX, 0, P.BRAKE_MAX - 1))
           if not CS.out.cruiseState.enabled:
