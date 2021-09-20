@@ -672,9 +672,11 @@ EVENTS: Dict[int, Dict[str, Union[Alert, Callable[[Any, messaging.SubMaster, boo
   },
 
   EventName.steerTempUnavailable: {
-    ET.SOFT_DISABLE: SoftDisableAlert(_("Autosteer Limit Reached")),
-    ET.NO_ENTRY: NoEntryAlert(_("Autosteer Limit Reached"),
-                              duration_hud_alert=0.),
+    ET.WARNING: Alert(
+      _("Autosteer Limit Reached"),
+      "",
+      AlertStatus.normal, AlertSize.small,
+      Priority.LOW, VisualAlert.none, AudibleAlert.none, 1., 1., 1.),
   },
 
   EventName.outOfSpace: {
