@@ -462,7 +462,7 @@ class CarInterface(CarInterfaceBase):
     extra_gears = [GearShifter.neutral, GearShifter.eco, GearShifter.manumatic, GearShifter.drive, GearShifter.sport, GearShifter.low, GearShifter.brake, GearShifter.unknown]
 
     # events
-    events = self.create_common_events(ret, extra_gears=extraGears, pcm_enable=False)
+    events = self.create_common_events(ret, extra_gears, pcm_enable=False)
 
     #if self.CS.low_speed_lockout and self.CP.openpilotLongitudinalControl:
       #events.add(EventName.lowSpeedLockout)
