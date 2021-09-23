@@ -29,8 +29,6 @@
 #include "selfdrive/ui/ui.h"
 #include "dashcam.h"
 
-const int border_shifter = 20;
-
 static void ui_draw_text(const UIState *s, float x, float y, const char *string, float size, NVGcolor color, const char *font_name) {
   nvgFontFace(s->vg, font_name);
   nvgFontSize(s->vg, size);
