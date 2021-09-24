@@ -124,10 +124,10 @@ class CarInterface(CarInterfaceBase):
     ret.lateralTuning.pid.kf = 0.00006  # conservative feed-forward
 
     # default longitudinal tuning for all hondas
-    ret.longitudinalTuning.kpBP = [0., 5., 11., 24., 37.] # 0, 12, 25, 55, 85 mph, 
-    ret.longitudinalTuning.kpV = [1.3, 1.7, 1.8, 2.0, 2.1]
+    ret.longitudinalTuning.kpBP = [0., 5., 35.]
+    ret.longitudinalTuning.kpV = [0.8, 0.56, 0.38]
     ret.longitudinalTuning.kiBP = [0., 35.]
-    ret.longitudinalTuning.kiV = [0.54, 0.36]
+    ret.longitudinalTuning.kiV = [0.16, 0.11]
 
     eps_modified = False
     for fw in car_fw:
@@ -345,8 +345,8 @@ class CarInterface(CarInterfaceBase):
       ret.brakeMaxBP = [0.]  # m/s
       ret.brakeMaxV = [1.]   # max brake allowed, 3.5m/s^2
     else:
-      ret.gasMaxBP = [0.]  # m/s
-      ret.gasMaxV = [0.6]  # max gas allowed
+      ret.gasMaxBP = [0., 9., 35]
+      ret.gasMaxV = [0.2, 0.5, 0.7]
       ret.brakeMaxBP = [5., 20.]  # m/s
       ret.brakeMaxV = [1., 0.8]   # max brake allowed
 
