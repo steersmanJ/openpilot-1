@@ -126,8 +126,8 @@ class CarInterface(CarInterfaceBase):
     # default longitudinal tuning for all hondas
     ret.longitudinalTuning.kpBP = [0., 5., 35.]
     ret.longitudinalTuning.kpV = [0.8, 0.56, 0.38]
-    ret.longitudinalTuning.kiBP = [0., 20., 35.]
-    ret.longitudinalTuning.kiV = [0.18, 0.54, 0.82]
+    ret.longitudinalTuning.kiBP = [0., 15., 20., 35.]
+    ret.longitudinalTuning.kiV = [0.18, 0.33, 0.54, 0.82] # 0mph, 33mph, 45mph, 78mph
 
     eps_modified = False
     for fw in car_fw:
