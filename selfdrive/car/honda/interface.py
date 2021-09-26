@@ -123,11 +123,11 @@ class CarInterface(CarInterfaceBase):
     ret.lateralTuning.pid.kiBP, ret.lateralTuning.pid.kpBP = [[0.], [0.]]
     ret.lateralTuning.pid.kf = 0.00006  # conservative feed-forward
 
-    # default longitudinal tuning for all hondas
-    ret.longitudinalTuning.kpBP = [0., 5., 35.]
-    ret.longitudinalTuning.kpV = [0.8, 0.56, 0.38]
-    ret.longitudinalTuning.kiBP = [0., 15., 20., 35.]
-    ret.longitudinalTuning.kiV = [0.18, 0.33, 0.54, 0.82] # 0mph, 33mph, 45mph, 78mph
+    # https://github.com/commaai/openpilot/wiki/Tuning#how-the-breakpoint-and-value-lists-work
+    ret.longitudinalTuning.kpBP = [0., 5., 11., 24., 37.] # 0, 12, 25, 55, 85 mph // tuned by Aragon#7777
+    ret.longitudinalTuning.kpV = [0.8, 1.5, 1.8, 2.2, 2.4]
+    ret.longitudinalTuning.kiBP = [0., 5., 11., 24., 37.] # 0, 12, 25, 55, 85 mph // tuned by Aragon#7777
+    ret.longitudinalTuning.kiV = [0.18, 0.20, 0.24, 0.36, 0.48]
 
     eps_modified = False
     for fw in car_fw:
