@@ -321,35 +321,35 @@ static void draw_laneless_button(UIState *s) {
     nvgFontSize(s->vg, 58);
 
     if (s->scene.laneless_mode == 0) {
-      nvgStrokeColor(s->vg, nvgRGBA(0,102,255,102));
+      nvgStrokeColor(s->vg, nvgRGBA(255,255,255,255));
       nvgStrokeWidth(s->vg, 6);
       nvgStroke(s->vg);
-      NVGcolor fillColor = nvgRGBA(0,125,0,0);
+      NVGcolor fillColor = nvgRGBA(0,125,0,80);
       nvgFillColor(s->vg, fillColor);
       nvgFill(s->vg);
-      nvgFillColor(s->vg, nvgRGBA(255,255,255,0));
-      nvgText(s->vg,btn_xc1,btn_yc-20,"Te",NULL);
-      nvgText(s->vg,btn_xc1,btn_yc+20,"st",NULL);
+      nvgFillColor(s->vg, nvgRGBA(255,255,255,200));
+      nvgText(s->vg,btn_xc1,btn_yc-20,"Lane",NULL);
+      nvgText(s->vg,btn_xc1,btn_yc+20,"Model",NULL);
     } else if (s->scene.laneless_mode == 1) {
-      nvgStrokeColor(s->vg, nvgRGBA(0,255,255,255));
+      nvgStrokeColor(s->vg, nvgRGBA(0,153,0,255));
       nvgStrokeWidth(s->vg, 6);
       nvgStroke(s->vg);
-      NVGcolor fillColor = nvgRGBA(0,100,255,0);
+      NVGcolor fillColor = nvgRGBA(0,100,255,80);
       nvgFillColor(s->vg, fillColor);
       nvgFill(s->vg);
-      nvgFillColor(s->vg, nvgRGBA(255,255,255,0));
-      nvgText(s->vg,btn_xc1,btn_yc-20,"Te",NULL);
-      nvgText(s->vg,btn_xc1,btn_yc+20,"st",NULL);
+      nvgFillColor(s->vg, nvgRGBA(255,255,255,200));
+      nvgText(s->vg,btn_xc1,btn_yc-20,"E2E",NULL);
+      nvgText(s->vg,btn_xc1,btn_yc+20,"Model",NULL);
     } else if (s->scene.laneless_mode == 2) {
-      nvgStrokeColor(s->vg, nvgRGBA(0,255,255,255));
+      nvgStrokeColor(s->vg, nvgRGBA(255,0,255,255));
       nvgStrokeWidth(s->vg, 6);
       nvgStroke(s->vg);
-      NVGcolor fillColor = nvgRGBA(0,255,0,0);
+      NVGcolor fillColor = nvgRGBA(125,0,125,80);
       nvgFillColor(s->vg, fillColor);
       nvgFill(s->vg);
-      nvgFillColor(s->vg, nvgRGBA(255,255,255,0));
-      nvgText(s->vg,btn_xc1,btn_yc-20,"Te",NULL);
-      nvgText(s->vg,btn_xc1,btn_yc+20,"st",NULL);
+      nvgFillColor(s->vg, nvgRGBA(255,255,255,200));
+      nvgText(s->vg,btn_xc1,btn_yc-20,"Auto",NULL);
+      nvgText(s->vg,btn_xc1,btn_yc+20,"Model",NULL);
     }
     
     s->scene.laneless_btn_touch_rect = Rect{center_x - laneless_btn_touch_pad, 
