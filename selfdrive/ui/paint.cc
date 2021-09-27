@@ -202,12 +202,12 @@ static void ui_draw_vision_lane_lines(UIState *s) {
         NVGcolor lane_color = nvgRGBAf(red_lvl, green_lvl, 0, 1);
         ui_draw_line(s, scene.lane_line_vertices[i], &lane_color, nullptr);
       }
-    }  
 
-    // paint road edges
-    for (int i = 0; i < std::size(scene.road_edge_vertices); i++) {
-      NVGcolor color = nvgRGBAf(1.0, 0.0, 0.0, std::clamp<float>(1.0 - scene.road_edge_stds[i], 0.0, 1.0));
-      ui_draw_line(s, scene.road_edge_vertices[i], &color, nullptr);
+      // paint road edges
+      for (int i = 0; i < std::size(scene.road_edge_vertices); i++) {
+        NVGcolor color = nvgRGBAf(1.0, 0.0, 0.0, std::clamp<float>(1.0 - scene.road_edge_stds[i], 0.0, 1.0));
+        ui_draw_line(s, scene.road_edge_vertices[i], &color, nullptr);
+      }
     }
 /***
     track_bg = nvgLinearGradient(s->vg, s->fb_w, s->fb_h, s->fb_w, s->fb_h * .4,
