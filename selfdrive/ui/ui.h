@@ -120,10 +120,6 @@ typedef struct UIScene {
   int laneless_mode;
   Rect laneless_btn_touch_rect;
 
-  cereal::CarState::Reader car_state;
-  cereal::ControlsState::Reader controls_state;
-  cereal::LateralPlan::Reader lateral_plan;
-
   int lead_status;
   float lead_d_rel;
   float lead_v_rel;
@@ -143,8 +139,7 @@ typedef struct UIScene {
   float pidStateOutput;
   int satelliteCount;
   bool computerBraking;
-  int laneless_mode;
-
+  
   cereal::CarState::Reader car_state;
   cereal::ControlsState::Reader controls_state;
   cereal::LateralPlan::Reader lateral_plan;
