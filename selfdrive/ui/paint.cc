@@ -141,6 +141,8 @@ static void ui_draw_track(UIState *s, const line_vertices_data &vd)
         track_bg = nvgLinearGradient(s->vg, s->fb_w, s->fb_h, s->fb_w, s->fb_h*.4,
           nvgRGBA(red_lvl, green_lvl, 0, 250), nvgRGBA(red_lvl, green_lvl, 0, 50));
     } else { // differentiate laneless mode color (Grace blue)
+        red_lvl = 0;
+        green_lvl = 255;
         track_bg = nvgLinearGradient(s->vg, s->fb_w, s->fb_h, s->fb_w, s->fb_h*.4,
           nvgRGBA(red_lvl, green_lvl, 0, 250), nvgRGBA(red_lvl, green_lvl, 0, 50));
     }
@@ -333,7 +335,7 @@ static void draw_laneless_button(UIState *s) {
       nvgText(s->vg,btn_xc1,btn_yc-20,"E2E",NULL);
       nvgText(s->vg,btn_xc1,btn_yc+20,"Model",NULL);
     } else if (s->scene.laneless_mode == 2) {
-      nvgStrokeColor(s->vg, nvgRGBA(0,255,0,255));
+      nvgStrokeColor(s->vg, nvgRGBA(57,57,57,255));
       nvgStrokeWidth(s->vg, 6);
       nvgStroke(s->vg);
       nvgText(s->vg,btn_xc1,btn_yc-20,"Auto",NULL);
