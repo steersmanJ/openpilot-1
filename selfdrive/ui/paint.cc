@@ -321,7 +321,7 @@ static void draw_laneless_button(UIState *s) {
     nvgFontSize(s->vg, 58);
 
     if (s->scene.laneless_mode == 0) {
-      nvgStrokeColor(s->vg, nvgRGBA(0,255,0,255));
+      nvgStrokeColor(s->vg, nvgRGBA(255,255,255,255));
       nvgStrokeWidth(s->vg, 6);
       nvgStroke(s->vg);
       nvgText(s->vg,btn_xc1,btn_yc-20,"Lane",NULL);
@@ -333,7 +333,7 @@ static void draw_laneless_button(UIState *s) {
       nvgText(s->vg,btn_xc1,btn_yc-20,"E2E",NULL);
       nvgText(s->vg,btn_xc1,btn_yc+20,"Model",NULL);
     } else if (s->scene.laneless_mode == 2) {
-      nvgStrokeColor(s->vg, nvgRGBA(255,0,255,255));
+      nvgStrokeColor(s->vg, nvgRGBA(0,255,0,255));
       nvgStrokeWidth(s->vg, 6);
       nvgStroke(s->vg);
       nvgText(s->vg,btn_xc1,btn_yc-20,"Auto",NULL);
