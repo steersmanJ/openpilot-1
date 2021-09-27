@@ -141,8 +141,8 @@ static void ui_draw_track(UIState *s, const line_vertices_data &vd)
         track_bg = nvgLinearGradient(s->vg, s->fb_w, s->fb_h, s->fb_w, s->fb_h*.4,
           nvgRGBA(red_lvl, green_lvl, 0, 250), nvgRGBA(red_lvl, green_lvl, 0, 50));
     } else { // differentiate laneless mode color (Grace blue)
-        track_bg = nvgLinearGradient(s->vg, s->fb_w, s->fb_h, s->fb_w, s->fb_h * .4,
-          nvgRGBA(0, 100, 255, 250), nvgRGBA(0, 100, 255, 50));
+        track_bg = nvgLinearGradient(s->vg, s->fb_w, s->fb_h, s->fb_w, s->fb_h*.4,
+          nvgRGBA(red_lvl, green_lvl, 0, 250), nvgRGBA(red_lvl, green_lvl, 0, 50));
     }
   } else {
     // Draw white vision track
@@ -185,22 +185,24 @@ static void ui_draw_vision_lane_lines(UIState *s) {
   float red_lvl = 0.0;
   float green_lvl = 0.0;
   //if (!scene.end_to_end) {
-  if (!scene.lateralPlan.lanelessModeStatus) {
-    // paint lanelines
-    for (int i = 0; i < std::size(scene.lane_line_vertices); i++) {
-      red_lvl = 0.0;
-      green_lvl = 0.0;
-      if (scene.lane_line_probs[i] > 0.4){
-        red_lvl = 1.0 - (scene.lane_line_probs[i] - 0.4) * 2.5;
-        green_lvl = 1.0 ;
+  if (s->scene.controls_state.getEnabled()) {
+    if (!scene.lateralPlan.lanelessModeStatus) {
+      // paint lanelines
+      for (int i = 0; i < std::size(scene.lane_line_vertices); i++) {
+        red_lvl = 0.0;
+        green_lvl = 0.0;
+        if (scene.lane_line_probs[i] > 0.4){
+          red_lvl = 1.0 - (scene.lane_line_probs[i] - 0.4) * 2.5;
+          green_lvl = 1.0 ;
+        }
+        else {
+          red_lvl = 1.0 ;
+          green_lvl = 1.0 - (0.4 - scene.lane_line_probs[i]) * 2.5;
+        }
+        NVGcolor lane_color = nvgRGBAf(red_lvl, green_lvl, 0, 1);
+        ui_draw_line(s, scene.lane_line_vertices[i], &lane_color, nullptr);
       }
-      else {
-        red_lvl = 1.0 ;
-        green_lvl = 1.0 - (0.4 - scene.lane_line_probs[i]) * 2.5;
-      }
-      NVGcolor lane_color = nvgRGBAf(red_lvl, green_lvl, 0, 1);
-      ui_draw_line(s, scene.lane_line_vertices[i], &lane_color, nullptr);
-    }
+    }  
 
     // paint road edges
     for (int i = 0; i < std::size(scene.road_edge_vertices); i++) {
