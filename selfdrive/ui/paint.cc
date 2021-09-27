@@ -321,35 +321,35 @@ static void draw_laneless_button(UIState *s) {
     nvgFontSize(s->vg, 58);
 
     if (s->scene.laneless_mode == 0) {
-      nvgStrokeColor(s->vg, nvgRGBA(0,125,0,255));
+      nvgStrokeColor(s->vg, nvgRGBA(0,102,255,0));
       nvgStrokeWidth(s->vg, 6);
       nvgStroke(s->vg);
-      NVGcolor fillColor = nvgRGBA(0,125,0,80);
+      NVGcolor fillColor = nvgRGBA(0,125,0,0);
       nvgFillColor(s->vg, fillColor);
       nvgFill(s->vg);
-      nvgFillColor(s->vg, nvgRGBA(255,255,255,200));
+      nvgFillColor(s->vg, nvgRGBA(255,255,255,0));
       nvgText(s->vg,btn_xc1,btn_yc-20,"Lane",NULL);
-      nvgText(s->vg,btn_xc1,btn_yc+20,"only",NULL);
+      nvgText(s->vg,btn_xc1,btn_yc+20,"Model",NULL);
     } else if (s->scene.laneless_mode == 1) {
-      nvgStrokeColor(s->vg, nvgRGBA(0,100,255,255));
+      nvgStrokeColor(s->vg, nvgRGBA(0,255,255,255));
       nvgStrokeWidth(s->vg, 6);
       nvgStroke(s->vg);
-      NVGcolor fillColor = nvgRGBA(0,100,255,80);
+      NVGcolor fillColor = nvgRGBA(0,100,255,0);
       nvgFillColor(s->vg, fillColor);
       nvgFill(s->vg);
-      nvgFillColor(s->vg, nvgRGBA(255,255,255,200));
-      nvgText(s->vg,btn_xc1,btn_yc-20,"Lane",NULL);
-      nvgText(s->vg,btn_xc1,btn_yc+20,"less",NULL);
+      nvgFillColor(s->vg, nvgRGBA(255,255,255,0));
+      nvgText(s->vg,btn_xc1,btn_yc-20,"E2E",NULL);
+      nvgText(s->vg,btn_xc1,btn_yc+20,"Model",NULL);
     } else if (s->scene.laneless_mode == 2) {
       nvgStrokeColor(s->vg, nvgRGBA(0,255,0,255));
       nvgStrokeWidth(s->vg, 6);
       nvgStroke(s->vg);
-      NVGcolor fillColor = nvgRGBA(0,255,0,80);
+      NVGcolor fillColor = nvgRGBA(0,255,0,0);
       nvgFillColor(s->vg, fillColor);
       nvgFill(s->vg);
-      nvgFillColor(s->vg, nvgRGBA(255,255,255,200));
+      nvgFillColor(s->vg, nvgRGBA(255,255,255,0));
       nvgText(s->vg,btn_xc1,btn_yc-20,"Auto",NULL);
-      nvgText(s->vg,btn_xc1,btn_yc+20,"Lane",NULL);
+      nvgText(s->vg,btn_xc1,btn_yc+20,"Model",NULL);
     }
     
     s->scene.laneless_btn_touch_rect = Rect{center_x - laneless_btn_touch_pad, 
@@ -503,33 +503,6 @@ static void bb_ui_draw_measures_right(UIState *s, int bb_x, int bb_y, int bb_w )
   int uom_fontSize = 15;
   int bb_uom_dx =  (int)(bb_w /2 - uom_fontSize*2.5) ;
 
-  //add visual radar relative distance
-  if (true) {
-    char val_str[16];
-    char uom_str[6];
-    NVGcolor val_color = nvgRGBA(255, 255, 255, 200);
-    if (s->scene.lead_status) {
-      //show RED if less than 5 meters
-      //show orange if less than 15 meters
-      if(s->scene.lead_d_rel < 15) {
-        val_color = nvgRGBA(255, 188, 3, 200);
-      }
-      if(s->scene.lead_d_rel < 5) {
-        val_color = nvgRGBA(255, 0, 0, 200);
-      }
-      // lead car relative distance is always in meters
-      snprintf(val_str, sizeof(val_str), "%d", (int)s->scene.lead_d_rel);
-    } else {
-       snprintf(val_str, sizeof(val_str), "-");
-    }
-    snprintf(uom_str, sizeof(uom_str), "m");
-    bb_h +=bb_ui_draw_measure(s,  val_str, uom_str, "DISTANCE",
-        bb_rx, bb_ry, bb_uom_dx,
-        val_color, lab_color, uom_color,
-        value_fontSize, label_fontSize, uom_fontSize );
-    bb_ry = bb_y + bb_h;
-  }
-
   //add visual radar relative speed
   if (true) {
     char val_str[16];
@@ -559,6 +532,33 @@ static void bb_ui_draw_measures_right(UIState *s, int bb_x, int bb_y, int bb_w )
       snprintf(uom_str, sizeof(uom_str), "mph");
     }
     bb_h +=bb_ui_draw_measure(s,  val_str, uom_str, "SPEED DIFF",
+        bb_rx, bb_ry, bb_uom_dx,
+        val_color, lab_color, uom_color,
+        value_fontSize, label_fontSize, uom_fontSize );
+    bb_ry = bb_y + bb_h;
+  }
+
+  //add visual radar relative distance
+  if (true) {
+    char val_str[16];
+    char uom_str[6];
+    NVGcolor val_color = nvgRGBA(255, 255, 255, 200);
+    if (s->scene.lead_status) {
+      //show RED if less than 5 meters
+      //show orange if less than 15 meters
+      if(s->scene.lead_d_rel < 15) {
+        val_color = nvgRGBA(255, 188, 3, 200);
+      }
+      if(s->scene.lead_d_rel < 5) {
+        val_color = nvgRGBA(255, 0, 0, 200);
+      }
+      // lead car relative distance is always in meters
+      snprintf(val_str, sizeof(val_str), "%d", (int)s->scene.lead_d_rel);
+    } else {
+       snprintf(val_str, sizeof(val_str), "-");
+    }
+    snprintf(uom_str, sizeof(uom_str), "m");
+    bb_h +=bb_ui_draw_measure(s,  val_str, uom_str, "DISTANCE",
         bb_rx, bb_ry, bb_uom_dx,
         val_color, lab_color, uom_color,
         value_fontSize, label_fontSize, uom_fontSize );
