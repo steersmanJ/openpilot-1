@@ -321,15 +321,15 @@ static void draw_laneless_button(UIState *s) {
     nvgFontSize(s->vg, 58);
 
     if (s->scene.laneless_mode == 0) {
-      nvgStrokeColor(s->vg, nvgRGBA(0,102,255,0));
+      nvgStrokeColor(s->vg, nvgRGBA(0,102,255,102));
       nvgStrokeWidth(s->vg, 6);
       nvgStroke(s->vg);
       NVGcolor fillColor = nvgRGBA(0,125,0,0);
       nvgFillColor(s->vg, fillColor);
       nvgFill(s->vg);
       nvgFillColor(s->vg, nvgRGBA(255,255,255,0));
-      nvgText(s->vg,btn_xc1,btn_yc-20,"Lane",NULL);
-      nvgText(s->vg,btn_xc1,btn_yc+20,"Model",NULL);
+      nvgText(s->vg,btn_xc1,btn_yc-20,"Te",NULL);
+      nvgText(s->vg,btn_xc1,btn_yc+20,"st",NULL);
     } else if (s->scene.laneless_mode == 1) {
       nvgStrokeColor(s->vg, nvgRGBA(0,255,255,255));
       nvgStrokeWidth(s->vg, 6);
@@ -338,18 +338,18 @@ static void draw_laneless_button(UIState *s) {
       nvgFillColor(s->vg, fillColor);
       nvgFill(s->vg);
       nvgFillColor(s->vg, nvgRGBA(255,255,255,0));
-      nvgText(s->vg,btn_xc1,btn_yc-20,"E2E",NULL);
-      nvgText(s->vg,btn_xc1,btn_yc+20,"Model",NULL);
+      nvgText(s->vg,btn_xc1,btn_yc-20,"Te",NULL);
+      nvgText(s->vg,btn_xc1,btn_yc+20,"st",NULL);
     } else if (s->scene.laneless_mode == 2) {
-      nvgStrokeColor(s->vg, nvgRGBA(0,255,0,255));
+      nvgStrokeColor(s->vg, nvgRGBA(0,255,255,255));
       nvgStrokeWidth(s->vg, 6);
       nvgStroke(s->vg);
       NVGcolor fillColor = nvgRGBA(0,255,0,0);
       nvgFillColor(s->vg, fillColor);
       nvgFill(s->vg);
       nvgFillColor(s->vg, nvgRGBA(255,255,255,0));
-      nvgText(s->vg,btn_xc1,btn_yc-20,"Auto",NULL);
-      nvgText(s->vg,btn_xc1,btn_yc+20,"Model",NULL);
+      nvgText(s->vg,btn_xc1,btn_yc-20,"Te",NULL);
+      nvgText(s->vg,btn_xc1,btn_yc+20,"st",NULL);
     }
     
     s->scene.laneless_btn_touch_rect = Rect{center_x - laneless_btn_touch_pad, 
@@ -582,7 +582,7 @@ static void bb_ui_draw_measures_right(UIState *s, int bb_x, int bb_y, int bb_w )
       snprintf(val_str, sizeof(val_str), "%.0f%s%s",s->scene.angleSteers , "°", "");
 
       snprintf(uom_str, sizeof(uom_str), "");
-    bb_h +=bb_ui_draw_measure(s,  val_str, uom_str, "REAL STEER",
+    bb_h +=bb_ui_draw_measure(s,  val_str, uom_str, "STEER ANGLE",
         bb_rx, bb_ry, bb_uom_dx,
         val_color, lab_color, uom_color,
         value_fontSize, label_fontSize, uom_fontSize );
@@ -609,7 +609,7 @@ static void bb_ui_draw_measures_right(UIState *s, int bb_x, int bb_y, int bb_w )
        snprintf(val_str, sizeof(val_str), "-");
     }
       snprintf(uom_str, sizeof(uom_str), "");
-    bb_h +=bb_ui_draw_measure(s,  val_str, uom_str, "DESIRE STEER",
+    bb_h +=bb_ui_draw_measure(s,  val_str, uom_str, "STEER DESIRE",
         bb_rx, bb_ry, bb_uom_dx,
         val_color, lab_color, uom_color,
         value_fontSize, label_fontSize, uom_fontSize );
