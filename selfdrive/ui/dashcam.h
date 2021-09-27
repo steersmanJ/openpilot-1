@@ -175,7 +175,7 @@ bool screen_lock_button_clicked(int touch_x, int touch_y, dashcam_element el) {
 }
 
 bool screen_button_clicked(int touch_x, int touch_y) {
-  return (touch_x >= 1660 && touch_x <= 1820 && touch_y >= 885 && touch_y <= 1055);
+  return (touch_x >= 9999 && touch_x <= 9999 && touch_y >= 9999 && touch_y <= 9999);
 }
 
 static void rotate_video() {
