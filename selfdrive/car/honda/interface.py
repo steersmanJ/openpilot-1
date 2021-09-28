@@ -124,11 +124,13 @@ class CarInterface(CarInterfaceBase):
     ret.lateralTuning.pid.kf = 0.00006  # conservative feed-forward
 
     # https://github.com/commaai/openpilot/wiki/Tuning#how-the-breakpoint-and-value-lists-work
-    ret.longitudinalTuning.kpBP = [0., 5., 11., 24., 37.] # 0, 12, 25, 55, 85 mph // tuned by Aragon#7777
-    ret.longitudinalTuning.kpV = [0.9, 1.3, 1.6, 1.9, 2.1]
-    ret.longitudinalTuning.kiBP = [0., 5., 11., 24., 37.] # 0, 12, 25, 55, 85 mph // tuned by Aragon#7777
-    ret.longitudinalTuning.kiV = [0.48, 0.36, 0.24, 0.20, 0.18]
-
+    ret.longitudinalTuning.kpBP = [0., 5., 35.]
+    ret.longitudinalTuning.kiBP = [0., 35.]
+    ret.longitudinalTuning.kdBP = [0., 5., 35.]
+    ret.longitudinalTuning.kpV = [3.6, 2.4, 1.5]
+    ret.longitudinalTuning.kiV = [0.54, 0.36]
+    ret.longitudinalTuning.kdV = [2.5, 1.2, 0.5]
+    
     eps_modified = False
     for fw in car_fw:
       if fw.ecu == "eps" and b"," in fw.fwVersion:
