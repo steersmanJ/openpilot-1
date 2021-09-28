@@ -127,7 +127,7 @@ class CarInterface(CarInterfaceBase):
     ret.longitudinalTuning.kpBP = [0., 5., 11., 24., 37.] # 0, 12, 25, 55, 85 mph // tuned by Aragon#7777
     ret.longitudinalTuning.kpV = [0.9, 1.3, 1.6, 1.9, 2.1]
     ret.longitudinalTuning.kiBP = [0., 5., 11., 24., 37.] # 0, 12, 25, 55, 85 mph // tuned by Aragon#7777
-    ret.longitudinalTuning.kiV = [0.18, 0.20, 0.24, 0.36, 0.48]
+    ret.longitudinalTuning.kiV = [0.48, 0.36, 0.24, 0.20, 0.18]
 
     eps_modified = False
     for fw in car_fw:
