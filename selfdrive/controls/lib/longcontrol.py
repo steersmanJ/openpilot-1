@@ -3,8 +3,6 @@ from common.numpy_fast import clip, interp
 from selfdrive.controls.lib.pid import PIController
 from selfdrive.controls.lib.drive_helpers import CONTROL_N
 from selfdrive.modeld.constants import T_IDXS
-import cereal.messaging as messaging
-import math
 
 LongCtrlState = log.ControlsState.LongControlState
 
@@ -65,7 +63,6 @@ class LongControl():
                             convert=compute_gb)
     self.v_pid = 0.0
     self.last_output_gb = 0.0
-    self.sm = messaging.SubMaster(['gpsLocationExternal'])
 
   def reset(self, v_pid):
     """Reset PID controller and change setpoint"""
@@ -87,16 +84,7 @@ class LongControl():
 
 
     # Actuation limits
-    self.sm.update(0)
-    gas_max_adjust = 1
-    pitchDeg = 0
-    if self.sm['gpsLocationExternal'].flags == 1: # Wait for gps accuracy
-       v_Vertical = -self.sm['gpsLocationExternal'].vNED[2]
-       v_Horizontal = math.sqrt(self.sm['gpsLocationExternal'].vNED[0] ** 2 + self.sm['gpsLocationExternal'].vNED[1] ** 2)
-       if v_Horizontal > 1: # cant get pitch from velocity vectors if they are zero
-            pitchDeg = math.tan(v_Vertical / v_Horizontal) * 180 / 3.14159
-            gas_max_adjust = interp(pitchDeg, [-16, -3, 0, 16], [0, .9, 1, 3])
-    gas_max = clip(interp(CS.vEgo, CP.gasMaxBP, CP.gasMaxV) * gas_max_adjust, 0, 1)
+    gas_max = interp(CS.vEgo, CP.gasMaxBP, CP.gasMaxV)
     brake_max = interp(CS.vEgo, CP.brakeMaxBP, CP.brakeMaxV)
 
     # Update state machine
