@@ -126,10 +126,10 @@ class CarInterface(CarInterfaceBase):
     # https://github.com/commaai/openpilot/wiki/Tuning#how-the-breakpoint-and-value-lists-work
     ret.longitudinalTuning.deadzoneBP = [0., 8.05]
     ret.longitudinalTuning.deadzoneV = [.0, .14]
-    ret.longitudinalTuning.kpBP = [0., 5., 20.]
-    ret.longitudinalTuning.kpV = [1.3, 1.0, 0.7]
-    ret.longitudinalTuning.kiBP = [0., 5., 12., 20., 27.]
-    ret.longitudinalTuning.kiV = [.35, .23, .20, .17, .1]
+    ret.longitudinalTuning.kpBP = [0., 5., 11., 24., 37.] # 0, 12, 25, 55, 85 mph // tuned by Aragon#7777
+    ret.longitudinalTuning.kpV = [3.6, 2.4, 2.2, 2.1, 2.0]
+    ret.longitudinalTuning.kiBP = [0., 5., 11., 24., 37.] # 0, 12, 25, 55, 85 mph // tuned by Aragon#7777
+    ret.longitudinalTuning.kiV = [0.55, 0.50, 0.45, 0.40, 0.35]
 
     eps_modified = False
     for fw in car_fw:
