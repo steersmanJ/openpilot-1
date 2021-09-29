@@ -125,7 +125,7 @@ class CarInterface(CarInterfaceBase):
 
     # https://github.com/commaai/openpilot/wiki/Tuning#how-the-breakpoint-and-value-lists-work
     ret.longitudinalTuning.kpBP = [0., 5., 11., 24., 37.] # 0, 12, 25, 55, 85 mph // tuned by Aragon#7777
-    ret.longitudinalTuning.kpV = [3.2, 2.4, 2.2, 2.1, 2.0]
+    ret.longitudinalTuning.kpV = [3.2, 2.5, 2.4, 2.3, 2.2]
     ret.longitudinalTuning.kiBP = [0., 5., 11., 24., 37.] # 0, 12, 25, 55, 85 mph // tuned by Aragon#7777
     ret.longitudinalTuning.kiV = [0.50, 0.55, 0.60, 0.65, 0.70]
 
