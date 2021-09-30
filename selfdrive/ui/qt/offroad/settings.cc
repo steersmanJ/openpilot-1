@@ -83,6 +83,12 @@ TogglesPanel::TogglesPanel(SettingsWindow *parent) : ListWidget(parent) {
       "Use LQR tuning values. For select models only..",
       "../assets/offroad/icon_openpilot.png",
     },
+    {
+      "TurnVisionControl",
+      "Enable vision based turn control",
+      "Use vision path predictions to estimate the appropiate speed to drive through turns ahead.",
+      "../assets/offroad/icon_road.png",
+    },
 #ifdef ENABLE_MAPS
     {
       "NavSettingTime24h",

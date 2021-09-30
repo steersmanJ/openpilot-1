@@ -42,6 +42,7 @@ def manager_init() -> None:
     ("OpenpilotEnabledToggle", "1"),
     ("DisableRadar", "1"),
     ("DisableRadar_Allow", "1"),
+    ("TurnVisionControl", "1"),
   ]
   if not PC:
     default_params.append(("LastUpdateTime", datetime.datetime.utcnow().isoformat().encode('utf8')))
