@@ -125,10 +125,12 @@ class CarInterface(CarInterfaceBase):
 
     # https://github.com/commaai/openpilot/wiki/Tuning#how-the-breakpoint-and-value-lists-work
     # default longitudinal tuning for all hondas
+    ret.longitudinalTuning.deadzoneBP = [0., 35.]
+    ret.longitudinalTuning.deadzoneV = [.0, .7]
     ret.longitudinalTuning.kpBP = [0., 5., 35.]
-    ret.longitudinalTuning.kpV = [3.6, 2.4, 1.5] if ret.enableGasInterceptor else [1.2, 0.8, 0.5]
+    ret.longitudinalTuning.kpV = [1.2, 1.3, 1.5] if ret.enableGasInterceptor else [1.2, 0.8, 0.5]
     ret.longitudinalTuning.kiBP = [0., 35.]
-    ret.longitudinalTuning.kiV = [0.54, 0.36] if ret.enableGasInterceptor else [0.18, 0.12]
+    ret.longitudinalTuning.kiV = [0.18, 0.36] if ret.enableGasInterceptor else [0.18, 0.12]
 
     eps_modified = False
     for fw in car_fw:
@@ -346,7 +348,7 @@ class CarInterface(CarInterfaceBase):
       ret.brakeMaxBP = [0.]  # m/s
       ret.brakeMaxV = [1.]   # max brake allowed, 3.5m/s^2
     else:
-      ret.gasMaxBP = [0., 9., 35]
+      ret.gasMaxBP = [0., 11., 35]
       ret.gasMaxV = [0.2, 0.5, 0.7]
       ret.brakeMaxBP = [5., 20.]  # m/s
       ret.brakeMaxV = [1., 0.8]   # max brake allowed
