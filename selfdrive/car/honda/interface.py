@@ -347,7 +347,7 @@ class CarInterface(CarInterfaceBase):
       ret.brakeMaxV = [1.]   # max brake allowed, 3.5m/s^2
     else:
       ret.gasMaxBP = [0., 11., 35]
-      ret.gasMaxV = [0.2, 0.5, 0.7]
+      ret.gasMaxV = [0.6, 0.7, 0.8]
       ret.brakeMaxBP = [5., 20.]  # m/s
       ret.brakeMaxV = [1., 0.8]   # max brake allowed
 
