@@ -187,9 +187,7 @@ class CarController():
     # all of this is only relevant for HONDA NIDEC
     max_accel = interp(CS.out.vEgo, P.NIDEC_MAX_ACCEL_BP, P.NIDEC_MAX_ACCEL_V)
     # TODO this 1.44 is just to maintain previous behavior
-    pcm_speed_BP = [-wind_brake,
-                    -wind_brake*(3/4),
-                      0.0,
+    pcm_speed_BP =    [0.0,
                       0.5]
     # The Honda ODYSSEY seems to have different PCM_ACCEL
     # msgs, is it other cars too?
