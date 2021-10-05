@@ -125,10 +125,16 @@ class CarInterface(CarInterfaceBase):
 
     # https://github.com/commaai/openpilot/wiki/Tuning#how-the-breakpoint-and-value-lists-work
     # default longitudinal tuning for all hondas
-    ret.longitudinalTuning.kpBP = [0., 5., 35.]
-    ret.longitudinalTuning.kpV = [1.2, 1.3, 1.5] if ret.enableGasInterceptor else [3.6, 2.4, 2.0]
-    ret.longitudinalTuning.kiBP = [0., 35.]
-    ret.longitudinalTuning.kiV = [0.18, 0.36] if ret.enableGasInterceptor else [0.45, 0.55]
+    if ret.enableGasInterceptor:
+      ret.longitudinalTuning.kpBP = [0., 5., 35.]
+      ret.longitudinalTuning.kpV = [1.2, 1.3, 2.2]
+      ret.longitudinalTuning.kiBP = [0., 5., 35.]
+      ret.longitudinalTuning.kiV = [0.18, 0.24, 0.70]
+    else:
+      ret.longitudinalTuning.kpBP = [0., 5., 35.]
+      ret.longitudinalTuning.kpV = [1.2, 1.3, 1.5]
+      ret.longitudinalTuning.kiBP = [0., 35.]
+      ret.longitudinalTuning.kiV = [0.18, 0.36]
 
     eps_modified = False
     for fw in car_fw:
