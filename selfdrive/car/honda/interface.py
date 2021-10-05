@@ -19,6 +19,12 @@ TransmissionType = car.CarParams.TransmissionType
 
 
 class CarInterface(CarInterfaceBase):
+  def __init__(self, CP, CarController, CarState):
+    super().__init__(CP, CarController, CarState)
+
+    self.last_enable_pressed = 0
+    self.last_enable_sent = 0
+
   @staticmethod
   def get_pid_accel_limits(current_speed, cruise_speed):
     # NIDECs don't allow acceleration near cruise_speed,
