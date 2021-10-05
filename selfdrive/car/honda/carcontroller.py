@@ -184,6 +184,15 @@ class CarController():
 
     # wind brake from air resistance decel at high speed
     wind_brake = interp(CS.out.vEgo, [0.0, 2.3, 35.0], [0.001, 0.002, 0.15])
+    # all of this is only relevant for HONDA NIDEC
+    max_accel = interp(CS.out.vEgo, P.NIDEC_MAX_ACCEL_BP, P.NIDEC_MAX_ACCEL_V)
+    # TODO this 1.44 is just to maintain previous behavior
+    pcm_speed_BP = [-wind_brake,
+                    -wind_brake*(3/4),
+                      0.0,
+                      0.5]
+    # The Honda ODYSSEY seems to have different PCM_ACCEL
+    # msgs, is it other cars too?
     if CS.CP.enableGasInterceptor:
       pcm_speed = 0.0
       pcm_accel = int(0.0)
