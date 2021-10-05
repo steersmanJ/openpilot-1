@@ -527,13 +527,22 @@ EVENTS: Dict[int, Dict[str, Union[Alert, Callable[[Any, messaging.SubMaster, boo
       Priority.LOW, VisualAlert.none, AudibleAlert.none, 1., 2., 2.),
   },
 
-  EventName.steerSaturated: {
-    ET.WARNING: Alert(
-      "Steering Torque Limit Reached",
-      "You may need to assist the wheel.",
-      AlertStatus.userPrompt, AlertSize.mid,
-      Priority.LOW, VisualAlert.none, AudibleAlert.none, 1., 1., 1.),
-  },
+  if Params().get_bool('TorqueLimitSound'):
+    EventName.steerSaturated: {
+      ET.WARNING: Alert(
+        "Steering Torque Limit Reached",
+        "You may need to assist the wheel.",
+        AlertStatus.userPrompt, AlertSize.mid,
+        Priority.LOW, VisualAlert.none, AudibleAlert.chimeWarning1, 1., 1., 1.),
+    },
+  else:
+    EventName.steerSaturated: {
+      ET.WARNING: Alert(
+        "Steering Torque Limit Reached",
+        "You may need to assist the wheel.",
+        AlertStatus.userPrompt, AlertSize.mid,
+        Priority.LOW, VisualAlert.none, AudibleAlert.none, 1., 1., 1.),
+    },
 
   # Thrown when the fan is driven at >50% but is not rotating
   EventName.fanMalfunction: {
