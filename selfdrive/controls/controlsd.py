@@ -663,6 +663,10 @@ class Controls:
         # //
         # Note: Openpilot MAX speed reading may be out of sync at higher speeds.
         # This is a sacrifice to get the car back in alignment and does not actually affect the real set speed.
+    else:
+      if self.v_cruise_kph != 255:
+        controlsState.vCruise = controlsState.vCruise * 1.0000
+
 
     if self.joystick_mode:
       controlsState.lateralControlState.debugState = lac_log
