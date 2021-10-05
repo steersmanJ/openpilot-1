@@ -86,6 +86,12 @@ TogglesPanel::TogglesPanel(QWidget *parent) : QWidget(parent) {
                                 "../assets/offroad/icon_openpilot.png",
                                 this));
 
+  toggles.append(new ParamControl("CivicSpeedAdjustment",
+                                "Honda Civic Align Speed",
+                                "In MPH, the civic rounds slightly too low. This feature makes openpilot accelerate that extra 0.5mph so the two speeds on the dash line up. (No more staying at 69 when set at 70).",
+                                "../assets/offroad/icon_openpilot.png",
+                                this));
+
 #ifdef ENABLE_MAPS
   toggles.append(new ParamControl("NavSettingTime24h",
                                   "Show ETA in 24h format",
