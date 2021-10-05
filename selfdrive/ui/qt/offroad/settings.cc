@@ -69,14 +69,20 @@ TogglesPanel::TogglesPanel(QWidget *parent) : QWidget(parent) {
                                                  this);
   toggles.append(record_toggle);
   toggles.append(new ParamControl("EndToEndToggle",
-                                  "\U0001f96c Disable use of lanelines (Alpha) \U0001f96c",
-                                  "In this mode openpilot will ignore lanelines and just drive how it thinks a human would.",
+                                  "Dynamic Lane Profile",
+                                  "In this mode openpilot will change models automatically or based on the button while onroad.",
                                   "../assets/offroad/icon_road.png",
                                   this));
 
   toggles.append(new ParamControl("NudgelessALC",
                                 "Nudgeless Automatic Lane Change",
                                 "When above 30mph or 48km/h, openpilot will attempt a lane change when the blinkers are activated instead of waiting for the driver to nudge the wheel. Be cautious when using this feature.",
+                                "../assets/offroad/icon_openpilot.png",
+                                this));
+
+  toggles.append(new ParamControl("Coasting",
+                                "Honda/GM: Coasting Downhill (Experimental)",
+                                "Openpilot will not use the brakes to slow the car down just from being over the set speed. This feature can be buggy and use too much or not enough brakes when a lead car is present, so use caution!",
                                 "../assets/offroad/icon_openpilot.png",
                                 this));
 
