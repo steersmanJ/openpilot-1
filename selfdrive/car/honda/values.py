@@ -5,7 +5,7 @@ Ecu = car.CarParams.Ecu
 VisualAlert = car.CarControl.HUDControl.VisualAlert
 
 class CarControllerParams():
-  ACCEL_MAX = 0.4
+  ACCEL_MAX = 1.2
 
   def __init__(self, CP):
     self.BRAKE_MAX = 1024//4
@@ -19,7 +19,7 @@ class CarControllerParams():
     self.NIDEC_ACCEL_LOOKUP_BP = [-1., 0., .6]
     self.NIDEC_ACCEL_LOOKUP_V = [-4.8, 0., 2.0]
 
-    self.NIDEC_MAX_ACCEL_V = [0.5, 1.6, 0.5, 0.4]
+    self.NIDEC_MAX_ACCEL_V = [0.5, 2.6, 0.8, 0.2]
     self.NIDEC_MAX_ACCEL_BP = [0.0, 4.0, 10., 20.]
 
     self.BOSCH_GAS_LOOKUP_BP = [0., 2.0]  # 2m/s^2
