@@ -1,11 +1,12 @@
 from cereal import car
 from selfdrive.car import dbc_dict
+from common.params import Params
 
 Ecu = car.CarParams.Ecu
 VisualAlert = car.CarControl.HUDControl.VisualAlert
 
 class CarControllerParams():
-  ACCEL_MAX = 1.2
+  ACCEL_MAX = 3.2 if Params().get_bool('CommaPedalEnhancements') else 1.2
 
   def __init__(self, CP):
     self.BRAKE_MAX = 1024//4

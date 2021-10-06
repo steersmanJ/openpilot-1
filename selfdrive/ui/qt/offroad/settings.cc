@@ -79,6 +79,12 @@ TogglesPanel::TogglesPanel(QWidget *parent) : QWidget(parent) {
                                 "When above 30mph or 48km/h, openpilot will attempt a lane change when the blinkers are activated instead of waiting for the driver to nudge the wheel. Be cautious when using this feature.",
                                 "../assets/offroad/icon_openpilot.png",
                                 this));
+                      
+  toggles.append(new ParamControl("CommaPedalEnhancements",
+                                "Comma Pedal Enhancements",
+                                "Specific adjustments to the comma pedal to optomize the tuning. Includes faster acceleration.",
+                                "../assets/offroad/icon_openpilot.png",
+                                this));
 
   toggles.append(new ParamControl("SmoothStop",
                                 "Eliminate jerk at complete stop (Beta)",
