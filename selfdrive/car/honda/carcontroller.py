@@ -188,6 +188,7 @@ class CarController():
     max_accel = interp(CS.out.vEgo, P.NIDEC_MAX_ACCEL_BP, P.NIDEC_MAX_ACCEL_V)
     # TODO this 1.44 is just to maintain previous behavior
     pcm_speed_BP = [-wind_brake,
+                    -wind_brake*(3/4),
                       0.0,
                       0.5]
     # The Honda ODYSSEY seems to have different PCM_ACCEL
@@ -204,11 +205,11 @@ class CarController():
       pcm_accel = int((1.0) * 0xc6)
     else:
       pcm_speed_V = [0.0,
-                     clip(CS.out.vEgo - 3.0, 0.0, 100.0),
-                     clip(CS.out.vEgo + 0.0, 0.0, 100.0),
+                     clip(CS.out.vEgo - 2.0, 0.0, 100.0),
+                     clip(CS.out.vEgo + 2.0, 0.0, 100.0),
                      clip(CS.out.vEgo + 5.0, 0.0, 100.0)]
       pcm_speed = interp(gas-brake, pcm_speed_BP, pcm_speed_V)
-      pcm_accel = int((1.0) * 0xc6)
+      pcm_accel = int(clip((accel/1.44)/max_accel, 0.0, 1.0) * 0xc6)
 
 
     if not CS.CP.openpilotLongitudinalControl:

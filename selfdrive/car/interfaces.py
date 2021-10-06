@@ -18,7 +18,7 @@ EventName = car.CarEvent.EventName
 # WARNING: this value was determined based on the model's training distribution,
 #          model predictions above this speed can be unpredictable
 MAX_CTRL_SPEED = (V_CRUISE_MAX + 4) * CV.KPH_TO_MS  # 135 + 4 = 86 mph
-ACCEL_MAX = 2.0
+ACCEL_MAX = 0.4
 ACCEL_MIN = -4.0
 
 
