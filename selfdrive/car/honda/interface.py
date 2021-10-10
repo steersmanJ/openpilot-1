@@ -77,6 +77,8 @@ class CarInterface(CarInterfaceBase):
     # https://github.com/commaai/openpilot/wiki/Tuning#how-the-breakpoint-and-value-lists-work
     # default longitudinal tuning for all hondas
     if ret.enableGasInterceptor:
+      ret.longitudinalTuning.deadzoneBP = [0., 9.]
+      ret.longitudinalTuning.deadzoneV = [0., .15]
       ret.longitudinalTuning.kpBP = [0., 5., 35.]
       ret.longitudinalTuning.kiBP = [0., 35.]
       ret.longitudinalTuning.kdBP = [0., 5., 35.]
