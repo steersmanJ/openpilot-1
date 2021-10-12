@@ -178,7 +178,7 @@ class LeadMpc():
      self.libmpc.init(MPC_COST_LONG.TTC, MPC_COST_LONG.DISTANCE, MPC_COST_LONG.ACCELERATION, MPC_COST_LONG.JERK)
 
     if CS.vEgo < 8:
-      TR = 1.2
+      TR = 1.8 
 
     t = sec_since_boot()
     self.n_its = self.libmpc.run_mpc(self.cur_state, self.mpc_solution, self.a_lead_tau, a_lead, TR)
