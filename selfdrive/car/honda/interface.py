@@ -25,20 +25,17 @@ class CarInterface(CarInterfaceBase):
     self.last_enable_pressed = 0
     self.last_enable_sent = 0
 
+class CarInterface(CarInterfaceBase):
   @staticmethod
-  def get_pid_accel_limits(CP, current_speed, cruise_speed, long_plan):
-    # NIDECs don't allow acceleration near cruise_speed,
-    # so limit limits of pid to prevent windup
-    if long_plan.longitudinalPlanSource == 'cruise':
-      ACCEL_MAX_VALS = [ACCEL_MAX, 1.0]
-      ACCEL_MAX_BP = [cruise_speed - 2., cruise_speed - .2]
-      ACCEL_MIN_VALS = [0.0, ACCEL_MIN]
-      ACCEL_MIN_BP = [cruise_speed + .2, cruise_speed + 7.]
-      return interp(current_speed, ACCEL_MIN_BP, ACCEL_MIN_VALS), interp(current_speed, ACCEL_MAX_BP, ACCEL_MAX_VALS)
+  def get_pid_accel_limits(CP, current_speed, cruise_speed):
+    if CP.carFingerprint in HONDA_BOSCH:
+      return CarControllerParams.BOSCH_ACCEL_MIN, CarControllerParams.BOSCH_ACCEL_MAX
     else:
-      ACCEL_MAX_VALS = [ACCEL_MAX, 1.0]
+      # NIDECs don't allow acceleration near cruise_speed,
+      # so limit limits of pid to prevent windup
+      ACCEL_MAX_VALS = [CarControllerParams.NIDEC_ACCEL_MAX, 1.0] if CP.enableGasInterceptor else [CarControllerParams.NIDEC_ACCEL_MAX, 0.2]
       ACCEL_MAX_BP = [cruise_speed - 2., cruise_speed - .2]
-      return ACCEL_MIN, interp(current_speed, ACCEL_MAX_BP, ACCEL_MAX_VALS)
+      return CarControllerParams.NIDEC_ACCEL_MIN, interp(current_speed, ACCEL_MAX_BP, ACCEL_MAX_VALS)
 
   @staticmethod
   def get_params(candidate, fingerprint=gen_empty_fingerprint(), car_fw=[]):  # pylint: disable=dangerous-default-value
@@ -84,8 +81,8 @@ class CarInterface(CarInterfaceBase):
       ret.longitudinalTuning.kpBP = [0., 5., 35.]
       ret.longitudinalTuning.kiBP = [0., 35.]
       ret.longitudinalTuning.kdBP = [0., 5., 35.]
-      ret.longitudinalTuning.kpV = [3.6, 2.4, 1.5]
-      ret.longitudinalTuning.kiV = [0.54, 0.36]
+      ret.longitudinalTuning.kpV = [1.2, 1.3, 1.5]
+      ret.longitudinalTuning.kiV = [0.18, 0.36]
       ret.longitudinalTuning.kdV = [2.5, 1.2, 0.5]
     else:
       ret.longitudinalTuning.kpBP = [0., 5., 35.]
