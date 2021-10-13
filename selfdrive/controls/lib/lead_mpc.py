@@ -13,7 +13,7 @@ ONE_BAR_DISTANCE = 0.9  # in seconds
 TWO_BAR_DISTANCE = 1.3  # in seconds
 THREE_BAR_DISTANCE = 1.8  # in seconds
 FOUR_BAR_DISTANCE = 2.3   # in seconds
-STOPPING_DISTANCE = 0.4 # distance between you and lead car when you come to stop
+STOPPING_DISTANCE = 0.6 # distance between you and lead car when you come to stop
 TR = TWO_BAR_DISTANCE  # default interval
 
 # Variables that change braking profiles
@@ -176,6 +176,9 @@ class LeadMpc():
     else:
      TR = TWO_BAR_DISTANCE # if readdistancelines != 1,2,3,4
      self.libmpc.init(MPC_COST_LONG.TTC, MPC_COST_LONG.DISTANCE, MPC_COST_LONG.ACCELERATION, MPC_COST_LONG.JERK)
+
+    if CS.vEgo < 5.36:
+      TR = 1.3 
 
     t = sec_since_boot()
     self.n_its = self.libmpc.run_mpc(self.cur_state, self.mpc_solution, self.a_lead_tau, a_lead, TR)
