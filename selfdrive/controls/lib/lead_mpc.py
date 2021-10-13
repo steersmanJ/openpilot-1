@@ -17,7 +17,7 @@ STOPPING_DISTANCE = 0.4 # distance between you and lead car when you come to sto
 TR = TWO_BAR_DISTANCE  # default interval
 
 # Variables that change braking profiles
-CITY_SPEED = 22.4  # braking profile changes when below this speed based on following dynamics below [m/s]
+CITY_SPEED = -50.0  # braking profile changes when below this speed based on following dynamics below [m/s]
 
 # City braking profile changes (makes the car brake harder because it wants to be farther from the lead car - increase to brake harder)
 ONE_BAR_PROFILE = [ONE_BAR_DISTANCE, 2.5]
