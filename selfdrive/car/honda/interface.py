@@ -25,6 +25,21 @@ class CarInterface(CarInterfaceBase):
     self.last_enable_pressed = 0
     self.last_enable_sent = 0
 
+    if self.sm['longitudinalPlan'].hasLead:
+      ret.longitudinalTuning.kpBP = [0., 5., 35.]
+      ret.longitudinalTuning.kiBP = [0., 35.]
+      ret.longitudinalTuning.kdBP = [0., 5., 35.]
+      ret.longitudinalTuning.kpV = [1.2, 0.8, 0.5]
+      ret.longitudinalTuning.kiV = [0.18, 0.12]
+      ret.longitudinalTuning.kdV = [2.5, 1.2, 0.5]
+    else:
+      ret.longitudinalTuning.kpBP = [0., 5., 35.]
+      ret.longitudinalTuning.kiBP = [0., 35.]
+      ret.longitudinalTuning.kdBP = [0., 5., 35.]
+      ret.longitudinalTuning.kpV = [3.6, 2.4, 1.5]
+      ret.longitudinalTuning.kiV = [0.54, 0.36]
+      ret.longitudinalTuning.kdV = [2.5, 1.2, 0.5]
+
 class CarInterface(CarInterfaceBase):
   @staticmethod
   def get_pid_accel_limits(CP, current_speed, cruise_speed):
@@ -71,23 +86,6 @@ class CarInterface(CarInterfaceBase):
     ret.lateralParams.torqueBP, ret.lateralParams.torqueV = [[0], [0]]
     ret.lateralTuning.pid.kiBP, ret.lateralTuning.pid.kpBP = [[0.], [0.]]
     ret.lateralTuning.pid.kf = 0.00006  # conservative feed-forward
-
-    # https://github.com/commaai/openpilot/wiki/Tuning#how-the-breakpoint-and-value-lists-work
-    # default longitudinal tuning for all hondas
-    if self.sm['longitudinalPlan'].hasLead:
-      ret.longitudinalTuning.kpBP = [0., 5., 35.]
-      ret.longitudinalTuning.kiBP = [0., 35.]
-      ret.longitudinalTuning.kdBP = [0., 5., 35.]
-      ret.longitudinalTuning.kpV = [1.2, 0.8, 0.5]
-      ret.longitudinalTuning.kiV = [0.18, 0.12]
-      ret.longitudinalTuning.kdV = [2.5, 1.2, 0.5]
-    else:
-      ret.longitudinalTuning.kpBP = [0., 5., 35.]
-      ret.longitudinalTuning.kiBP = [0., 35.]
-      ret.longitudinalTuning.kdBP = [0., 5., 35.]
-      ret.longitudinalTuning.kpV = [3.6, 2.4, 1.5]
-      ret.longitudinalTuning.kiV = [0.54, 0.36]
-      ret.longitudinalTuning.kdV = [2.5, 1.2, 0.5]
 
     eps_modified = False
     for fw in car_fw:
