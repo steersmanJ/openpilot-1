@@ -35,7 +35,7 @@ class CarInterface(CarInterfaceBase):
     return ACCEL_MIN, interp(current_speed, ACCEL_MAX_BP, ACCEL_MAX_VALS)
 
   @staticmethod
-  def get_params(candidate, fingerprint=gen_empty_fingerprint(), car_fw=[]):  # pylint: disable=dangerous-default-value
+  def get_params(self, candidate, fingerprint=gen_empty_fingerprint(), car_fw=[]):  # pylint: disable=dangerous-default-value
     ret = CarInterfaceBase.get_std_params(candidate, fingerprint)
     ret.carName = "honda"
 
@@ -74,18 +74,20 @@ class CarInterface(CarInterfaceBase):
 
     # https://github.com/commaai/openpilot/wiki/Tuning#how-the-breakpoint-and-value-lists-work
     # default longitudinal tuning for all hondas
-    if ret.enableGasInterceptor:
+    if self.sm['longitudinalPlan'].hasLead:
       ret.longitudinalTuning.kpBP = [0., 5., 35.]
       ret.longitudinalTuning.kiBP = [0., 35.]
       ret.longitudinalTuning.kdBP = [0., 5., 35.]
-      ret.longitudinalTuning.kpV = [1.2, 1.3, 1.5]
-      ret.longitudinalTuning.kiV = [0.18, 0.36]
+      ret.longitudinalTuning.kpV = [1.2, 0.8, 0.5]
+      ret.longitudinalTuning.kiV = [0.18, 0.12]
       ret.longitudinalTuning.kdV = [2.5, 1.2, 0.5]
     else:
       ret.longitudinalTuning.kpBP = [0., 5., 35.]
-      ret.longitudinalTuning.kpV = [1.2, 0.8, 0.5]
       ret.longitudinalTuning.kiBP = [0., 35.]
-      ret.longitudinalTuning.kiV = [0.18, 0.07]
+      ret.longitudinalTuning.kdBP = [0., 5., 35.]
+      ret.longitudinalTuning.kpV = [3.6, 2.4, 1.5]
+      ret.longitudinalTuning.kiV = [0.54, 0.36]
+      ret.longitudinalTuning.kdV = [2.5, 1.2, 0.5]
 
     eps_modified = False
     for fw in car_fw:
