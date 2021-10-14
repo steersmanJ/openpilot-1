@@ -72,7 +72,14 @@ class CarInterface(CarInterfaceBase):
     ret.lateralTuning.pid.kf = 0.00006  # conservative feed-forward
 
     # https://github.com/commaai/openpilot/wiki/Tuning#how-the-breakpoint-and-value-lists-work
-    if not ret.enableGasInterceptor:
+    if ret.enableGasInterceptor:
+      ret.longitudinalTuning.kpBP = [0., 4.47, 8.94, 13.41, 17.88, 22.35, 26.82, 31.74, 35.76] # 0, 10, 20, 30, 40, 50, 60, 70, 80 mph
+      ret.longitudinalTuning.kpV = [1.11, 1.15, 1.25, 1.30, 1.35, 1.40, 1.45, 1.50, 1.55]
+      ret.longitudinalTuning.kiBP = [0., 4.47, 8.94, 13.41, 17.88, 22.35, 26.82, 31.74, 35.76] # 10, 20, 30, 40, 50, 60, 70, 80 mph
+      ret.longitudinalTuning.kiV = [0.18, 0.19, 0.20, 0.21, 0.22, 0.25, 0.36, 0.38, 0.40]
+      ret.longitudinalTuning.kdBP = [0., 5., 35.]
+      ret.longitudinalTuning.kdV = [2.5, 1.2, 0.5]
+    else:
       ret.longitudinalTuning.kpBP = [0., 5., 35.]
       ret.longitudinalTuning.kpV = [1.2, 0.8, 0.5]
       ret.longitudinalTuning.kiBP = [0., 35.]
