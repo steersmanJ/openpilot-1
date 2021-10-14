@@ -25,7 +25,6 @@ class CarInterface(CarInterfaceBase):
     self.last_enable_pressed = 0
     self.last_enable_sent = 0
 
-class CarInterface(CarInterfaceBase):
   @staticmethod
   def get_pid_accel_limits(CP, current_speed, cruise_speed):
     # NIDECs don't allow acceleration near cruise_speed,
