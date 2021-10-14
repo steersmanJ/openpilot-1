@@ -13,11 +13,11 @@ ONE_BAR_DISTANCE = 0.9  # in seconds
 TWO_BAR_DISTANCE = 1.3  # in seconds
 THREE_BAR_DISTANCE = 1.8  # in seconds
 FOUR_BAR_DISTANCE = 2.3   # in seconds
-STOPPING_DISTANCE = 0.5 # distance between you and lead car when you come to stop
+STOPPING_DISTANCE = 1 # distance between you and lead car when you come to stop
 TR = TWO_BAR_DISTANCE  # default interval
 
 # Variables that change braking profiles
-CITY_SPEED = 22.5  # braking profile changes when below this speed based on following dynamics below [m/s]
+CITY_SPEED = 19.44  # braking profile changes when below this speed based on following dynamics below [m/s]
 
 # City braking profile changes (makes the car brake harder because it wants to be farther from the lead car - increase to brake harder)
 ONE_BAR_PROFILE = [ONE_BAR_DISTANCE, 2.5]
@@ -59,11 +59,11 @@ class LeadMpc():
     self.duration = 0
     self.status = False
 
-    self.oneBarBP = [-0.1, 2.25]
-    self.twoBarBP = [-0.1, 2.5]
+    self.oneBarBP = [-0.4, 2.1]
+    self.twoBarBP = [-0.4, 1.9]
     self.threeBarBP = [0, 3.0]
-    self.oneBarProfile = [ONE_BAR_DISTANCE, 2.1]
-    self.twoBarProfile = [TWO_BAR_DISTANCE, 2.1]
+    self.oneBarProfile = [ONE_BAR_DISTANCE, 2.2]
+    self.twoBarProfile = [TWO_BAR_DISTANCE, 2.2]
     self.threeBarProfile = [THREE_BAR_DISTANCE, 2.1]
     self.oneBarHwy = [ONE_BAR_DISTANCE, ONE_BAR_DISTANCE + 0.4]
     self.twoBarHwy = [TWO_BAR_DISTANCE, TWO_BAR_DISTANCE + 0.3]
@@ -176,9 +176,6 @@ class LeadMpc():
     else:
      TR = TWO_BAR_DISTANCE # if readdistancelines != 1,2,3,4
      self.libmpc.init(MPC_COST_LONG.TTC, MPC_COST_LONG.DISTANCE, MPC_COST_LONG.ACCELERATION, MPC_COST_LONG.JERK)
-
-    if CS.vEgo < 8:
-      TR = 1.8 
 
     t = sec_since_boot()
     self.n_its = self.libmpc.run_mpc(self.cur_state, self.mpc_solution, self.a_lead_tau, a_lead, TR)
