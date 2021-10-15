@@ -26,7 +26,7 @@ class CarInterface(CarInterfaceBase):
     self.last_enable_sent = 0
 
   @staticmethod
-  def get_pid_accel_limits(CP, current_speed, cruise_speed, long_plan):
+  def get_pid_accel_limits(self, CP, current_speed, cruise_speed, long_plan):
     # NIDECs don't allow acceleration near cruise_speed,
     # so limit limits of pid to prevent windup
     if self.sm['longitudinalPlan'].hasLead:
