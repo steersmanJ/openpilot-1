@@ -26,12 +26,19 @@ class CarInterface(CarInterfaceBase):
     self.last_enable_sent = 0
 
   @staticmethod
-  def get_pid_accel_limits(CP, current_speed, cruise_speed):
+  def get_pid_accel_limits(CP, current_speed, cruise_speed, long_plan):
     # NIDECs don't allow acceleration near cruise_speed,
     # so limit limits of pid to prevent windup
-    ACCEL_MAX_VALS = [ACCEL_MAX, 1.0] if CP.enableGasInterceptor else [ACCEL_MAX, 0.2]
-    ACCEL_MAX_BP = [cruise_speed - 2., cruise_speed - .2]
-    return ACCEL_MIN, interp(current_speed, ACCEL_MAX_BP, ACCEL_MAX_VALS)
+    if self.sm['longitudinalPlan'].hasLead:
+      ACCEL_MAX_VALS = [ACCEL_MAX, 1.0]
+      ACCEL_MAX_BP = [cruise_speed - 2., cruise_speed - .2]
+      return ACCEL_MIN, interp(current_speed, ACCEL_MAX_BP, ACCEL_MAX_VALS)
+    else:
+      ACCEL_MAX_VALS = [ACCEL_MAX, 1.0, 0.0]
+      ACCEL_MAX_BP = [cruise_speed - 2., cruise_speed - .2, cruise_speed + 1.]
+      ACCEL_MIN_VALS = [0.0, 0.0, ACCEL_MIN]
+      ACCEL_MIN_BP = [cruise_speed + .1, cruise_speed + 5., cruise_speed + 8.]
+      return interp(current_speed, ACCEL_MIN_BP, ACCEL_MIN_VALS), interp(current_speed, ACCEL_MAX_BP, ACCEL_MAX_VALS)
 
   @staticmethod
   def get_params(candidate, fingerprint=gen_empty_fingerprint(), car_fw=[]):  # pylint: disable=dangerous-default-value
@@ -72,20 +79,6 @@ class CarInterface(CarInterfaceBase):
     ret.lateralTuning.pid.kf = 0.00006  # conservative feed-forward
 
     # https://github.com/commaai/openpilot/wiki/Tuning#how-the-breakpoint-and-value-lists-work
-    if ret.enableGasInterceptor:
-      ret.longitudinalTuning.kpBP = [0., 4.47, 8.94, 13.41, 17.88, 22.35, 26.82, 31.74, 35.76] # 0, 10, 20, 30, 40, 50, 60, 70, 80 mph
-      ret.longitudinalTuning.kpV = [1.11, 1.15, 1.25, 1.30, 1.35, 1.40, 1.45, 1.50, 1.55]
-      ret.longitudinalTuning.kiBP = [0., 4.47, 8.94, 13.41, 17.88, 22.35, 26.82, 31.74, 35.76] # 10, 20, 30, 40, 50, 60, 70, 80 mph
-      ret.longitudinalTuning.kiV = [0.18, 0.19, 0.20, 0.21, 0.22, 0.25, 0.36, 0.38, 0.40]
-      ret.longitudinalTuning.kdBP = [0., 5., 35.]
-      ret.longitudinalTuning.kdV = [2.5, 1.2, 0.5]
-    else:
-      ret.longitudinalTuning.kpBP = [0., 5., 35.]
-      ret.longitudinalTuning.kpV = [1.2, 0.8, 0.5]
-      ret.longitudinalTuning.kiBP = [0., 35.]
-      ret.longitudinalTuning.kiV = [0.18, 0.12]
-      ret.longitudinalTuning.kdBP = [0., 5., 35.]
-      ret.longitudinalTuning.kdV = [2.5, 1.2, 0.5]
 
     eps_modified = False
     for fw in car_fw:
