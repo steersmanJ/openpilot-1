@@ -34,10 +34,10 @@ class CarInterface(CarInterfaceBase):
       ACCEL_MAX_BP = [cruise_speed - 2., cruise_speed - .2]
       return ACCEL_MIN, interp(current_speed, ACCEL_MAX_BP, ACCEL_MAX_VALS)
     else:
-      ACCEL_MAX_VALS = [ACCEL_MAX, 1.0, 0.0]
-      ACCEL_MAX_BP = [cruise_speed - 2., cruise_speed - .2, cruise_speed + 1.]
+      ACCEL_MAX_VALS = [ACCEL_MAX, 1.0]
+      ACCEL_MAX_BP = [cruise_speed - 2., cruise_speed - .2]
       ACCEL_MIN_VALS = [0.0, 0.0, ACCEL_MIN]
-      ACCEL_MIN_BP = [cruise_speed + .1, cruise_speed + 5., cruise_speed + 8.]
+      ACCEL_MIN_BP = [cruise_speed + .1, cruise_speed + 4., cruise_speed + 8.]
       return interp(current_speed, ACCEL_MIN_BP, ACCEL_MIN_VALS), interp(current_speed, ACCEL_MAX_BP, ACCEL_MAX_VALS)
 
   @staticmethod
