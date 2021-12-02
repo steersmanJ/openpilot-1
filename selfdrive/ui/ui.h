@@ -27,7 +27,8 @@
 #define COLOR_YELLOW nvgRGBA(218, 202, 37, 255)
 #define COLOR_RED nvgRGBA(201, 34, 49, 255)
 
-const int bdr_s = 30;
+const int bdr_s = 10;
+const int bdr_is = 30;
 const int header_h = 420;
 const int footer_h = 280;
 
@@ -118,6 +119,28 @@ typedef struct UIScene {
   bool world_objects_visible;
 
   cereal::PandaState::PandaType pandaType;
+
+  int lead_status;
+  float lead_d_rel;
+  float lead_v_rel;
+  float angleSteers;
+  bool brakePressed;
+  float angleSteersDes;
+  bool recording;
+  float gpsAccuracyUblox;
+  float altitudeUblox;
+  int engineRPM;
+  int dashcamX;
+  int dashcamY;
+  float aEgo;
+  float steeringTorqueEps;
+  bool steeringPressed;
+  bool enabled;
+  float pidStateOutput;
+  int cpuUsagePercent;
+  float cpu0TempC;
+  int satelliteCount;
+  bool computerBraking;
 
   // modelV2
   float lane_line_probs[4];
