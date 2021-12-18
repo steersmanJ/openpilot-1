@@ -202,8 +202,8 @@ class LongitudinalMpc():
     self.v_ego = 0.
     self.reset()
     self.accel_limit_arr = np.zeros((N+1, 2))
-    self.accel_limit_arr[:,0] = -1.2
-    self.accel_limit_arr[:,1] = 1.2
+    self.accel_limit_arr[:,0] = -3.2
+    self.accel_limit_arr[:,1] = 3.2
     self.source = SOURCES[2]
 
   def reset(self):

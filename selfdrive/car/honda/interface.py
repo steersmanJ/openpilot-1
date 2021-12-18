@@ -88,6 +88,9 @@ class CarInterface(CarInterfaceBase):
       ret.longitudinalTuning.kpV = [1.2, 0.8, 0.5]
       ret.longitudinalTuning.kiBP = [0., 35.]
       ret.longitudinalTuning.kiV = [0.18, 0.12]
+      ret.startingAccelRate = 6.0 # brake_travel/s while releasing on restart
+    else:
+      ret.startingAccelRate = 6.0 # brake_travel/s while releasing on restart
 
     eps_modified = False
     for fw in car_fw:
