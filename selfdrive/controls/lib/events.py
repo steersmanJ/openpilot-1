@@ -527,7 +527,7 @@ EVENTS: Dict[int, Dict[str, Union[Alert, Callable[[Any, messaging.SubMaster, boo
       "Lane Keeping Assist is OFF",
       "Manual Steering Required",
       AlertStatus.normal, AlertSize.mid,
-      Priority.LOW, VisualAlert.none, AudibleAlert.chimeDisengage, 1., 2., 2.),
+      Priority.LOW, VisualAlert.none, AudibleAlert.disengage, 1., 2., 2.),
   },
 
   EventName.manualLongitudinalRequired: {
