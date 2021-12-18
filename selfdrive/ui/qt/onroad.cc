@@ -124,7 +124,7 @@ ButtonsWindow::ButtonsWindow(QWidget *parent) : QWidget(parent) {
     mlButton->hide();
   }
 
-  dfButton = new QPushButton("DF\nprofile");
+  dfButton = new QPushButton("GAP\nAdjust");
   QObject::connect(dfButton, &QPushButton::clicked, [=]() {
     QUIState::ui_state.scene.dfButtonStatus = dfStatus < 3 ? dfStatus + 1 : 0;  // wrap back around
   });
