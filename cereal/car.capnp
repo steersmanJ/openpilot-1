@@ -200,14 +200,6 @@ struct CarState {
   # clutch (manual transmission only)
   clutchPressed @28 :Bool;
 
-  lkasEnabled @39 :Bool;
-  leftBlinkerOn @40 :Bool;
-  rightBlinkerOn @41 :Bool;
-  disengageByBrake @42 :Bool;
-  automaticLaneChange @43 :Bool;
-  belowLaneChangeSpeed @44 :Bool;
-  accEnabled @45 :Bool;
-
   # which packets this state came from
   canMonoTimes @12: List(UInt64);
 
@@ -218,6 +210,15 @@ struct CarState {
   # dp
   engineRPM @39 :Float32;
   cruiseActualEnabled @40 :Bool;
+
+  # spektor
+  lkasEnabled @41 :Bool;
+  leftBlinkerOn @42 :Bool;
+  rightBlinkerOn @43 :Bool;
+  disengageByBrake @44 :Bool;
+  automaticLaneChange @45 :Bool;
+  belowLaneChangeSpeed @46 :Bool;
+  accEnabled @47 :Bool;
 
   struct WheelSpeeds {
     # optional wheel speeds
