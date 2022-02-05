@@ -268,7 +268,7 @@ class CarController():
             # Sending non-zero gas when OP is not enabled will cause the PCM not to respond to throttle as expected
             # when you do enable.
             if active and CS.out.cruiseState.enabled:
-              apply_gas = clip(gas_mult * (gas - brake + wind_brake*3/4), 0., 1.)
+              apply_gas = clip(gas_mult * gas, 0., 1.)
             else:
               apply_gas = 0.0
             can_sends.append(create_gas_interceptor_command(self.packer, apply_gas, idx))
