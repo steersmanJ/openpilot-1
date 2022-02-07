@@ -20,6 +20,9 @@ class OnroadHud : public QWidget {
   Q_PROPERTY(bool hideDM MEMBER hideDM NOTIFY valueChanged);
   Q_PROPERTY(int status MEMBER status NOTIFY valueChanged);
 
+  Q_PROPERTY(bool isBraking MEMBER isBraking NOTIFY valueChanged);
+  Q_PROPERTY(bool speedTrapHelper MEMBER speedTrapHelper NOTIFY valueChanged);
+
 public:
   explicit OnroadHud(QWidget *parent);
   void updateState(const UIState &s);
@@ -27,6 +30,7 @@ public:
 private:
   void drawIcon(QPainter &p, int x, int y, QPixmap &img, QBrush bg, float opacity);
   void drawText(QPainter &p, int x, int y, const QString &text, int alpha = 255);
+  void drawColorText(QPainter &p, int x, int y, const QString &text, QColor foraBozo);
   void paintEvent(QPaintEvent *event) override;
 
   QPixmap engage_img;
@@ -41,6 +45,9 @@ private:
   bool dmActive = false;
   bool hideDM = false;
   int status = STATUS_DISENGAGED;
+
+  bool isBraking = false;
+  bool speedTrapHelper = false;
 
 signals:
   void valueChanged();

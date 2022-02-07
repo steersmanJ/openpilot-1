@@ -38,6 +38,7 @@ class CarState(CarStateBase):
 
     ret.brakePressed = cp.vl["BRAKE_MODULE"]["BRAKE_PRESSED"] != 0
     ret.brakeHoldActive = cp.vl["ESP_CONTROL"]["BRAKE_HOLD_ACTIVE"] == 1
+    ret.brakeLightsDEPRECATED = bool(cp.vl["ESP_CONTROL"]["BRAKE_LIGHTS_ACC"] or ret.brakePressed or ret.brakeHoldActive)
     if self.CP.enableGasInterceptor:
       ret.gas = (cp.vl["GAS_SENSOR"]["INTERCEPTOR_GAS"] + cp.vl["GAS_SENSOR"]["INTERCEPTOR_GAS2"]) / 2.
       ret.gasPressed = ret.gas > 15
@@ -161,6 +162,7 @@ class CarState(CarStateBase):
       ("TURN_SIGNALS", "BLINKERS_STATE"),
       ("LKA_STATE", "EPS_STATUS"),
       ("AUTO_HIGH_BEAM", "LIGHT_STALK"),
+      ("BRAKE_LIGHTS_ACC", "ESP_CONTROL", 0)
     ]
 
     checks = [
