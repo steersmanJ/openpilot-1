@@ -567,9 +567,9 @@ EVENTS: Dict[int, Dict[str, Union[Alert, AlertCallbackType]]] = {
 
   EventName.speedLimitActive: {
     ET.WARNING: Alert(
-      "Cruise set to speed limit",
-      "",
-      AlertStatus.userPrompt, AlertSize.small,
+      "Cruise set to speed limit offset",
+      "MAX speed will always take priority.",
+      AlertStatus.userPrompt, AlertSize.mid,
       Priority.LOW, VisualAlert.none, AudibleAlert.none, 2.),
   },
 
