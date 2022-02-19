@@ -235,7 +235,7 @@ class CarController():
       self.button_type = 1
     elif speed_diff < 0:
       self.button_type = 2
-    return None
+    return CruiseButtons.SET_ACC
 
   def type_1(self):
     cruise_button = CruiseButtons.ACCEL_ACC
@@ -260,7 +260,7 @@ class CarController():
     return cruise_button
 
   def type_3(self):
-    cruise_button = None
+    cruise_button = CruiseButtons.SET_ACC
     self.button_count += 1
     if self.button_count > self.t_interval:
       self.button_type = 0
