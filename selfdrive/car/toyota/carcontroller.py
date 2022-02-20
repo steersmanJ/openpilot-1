@@ -274,7 +274,7 @@ class CarController():
     return cruise_button
 
   def get_cruise_buttons(self, CS):
-    cruise_button = None
+    cruise_button = CruiseButtons.SET_ACC
     #if not self.get_cruise_buttons_status(CS):
     #  print("STOPPED - NO SPAMMING")
     #  pass
