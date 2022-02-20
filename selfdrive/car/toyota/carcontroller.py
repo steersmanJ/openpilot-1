@@ -269,7 +269,7 @@ class CarController():
   def get_button_control(self, CS, final_speed):
     is_metric = Params().get_bool("IsMetric")
     self.init_speed = round(final_speed * CV.KPH_TO_MPH) if not is_metric else round(final_speed)
-    self.v_set_dis = round(CS.out.cruiseState.speed * CV.MS_TO_MPH) if not is_metric else round(CS.out.cruiseState.speed * CV.MS_TO_KPH)
+    self.v_set_dis = round(CS.out.vEgo * CV.MS_TO_MPH) if not is_metric else round(CS.out.vEgo * CV.MS_TO_KPH)
     cruise_button = self.get_button_type(self.button_type)
     return cruise_button
 
