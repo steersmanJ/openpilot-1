@@ -224,25 +224,39 @@ class LongitudinalMpc():
     self.x0 = np.zeros(X_DIM)
     self.set_weights()
 
-  def set_weights(self):
+  def set_weights(self, prev_accel_constraint=True):
     if self.e2e:
       self.set_weights_for_xva_policy()
     else:
-      self.set_weights_for_lead_policy()
+      self.set_weights_for_lead_policy(prev_accel_constraint)
 
-  def set_weights_for_lead_policy(self):
+  def get_cost_multipliers(self):
+    v_ego = self.x0[1]
+    v_ego_bps = [0, 10]
+    TFs = [1.0, 1.25, T_FOLLOW]
     # KRKeegan adjustments to costs for different TFs
     # these were calculated using the test_longitudial.py deceleration tests
-    # All tests pass without changing any of the costs, but these small
-    # adjustments keep the stopping profile approximately in line with stock.
-    TFs = [1.0, 1.25, T_FOLLOW]
-    x_ego_obstacle_cost_multiplier = interp(self.desired_TF, TFs, [2, 1.3, 1.])
-    j_ego_cost_multiplier = interp(self.desired_TF, TFs, [.1, .8, 1.])
-    d_zone_cost_multiplier = interp(self.desired_TF, TFs, [1.8, 1.3, 1.])
+    a_change_tf = interp(self.desired_TF, TFs, [.1, .8, 1.])
+    j_ego_tf = interp(self.desired_TF, TFs, [.6, .8, 1.])
+    d_zone_tf = interp(self.desired_TF, TFs, [1.6, 1.3, 1.])
+     # KRKeegan adjustments to improve sluggish acceleration these also
+    # alter deceleration in the same range
+    j_ego_v_ego = interp(v_ego, v_ego_bps, [.05, 1.])
+    a_change_v_ego = interp(v_ego, v_ego_bps, [.05, 1.])
+    # Select the appropriate min/max of the options
+    j_ego = min(j_ego_tf, j_ego_v_ego)
+    a_change = min(a_change_tf, a_change_v_ego)
+    return (a_change, j_ego, d_zone_tf)
 
-    W = np.asfortranarray(np.diag([X_EGO_OBSTACLE_COST * x_ego_obstacle_cost_multiplier, X_EGO_COST, V_EGO_COST, A_EGO_COST, A_CHANGE_COST, J_EGO_COST * j_ego_cost_multiplier]))
+  def set_weights_for_lead_policy(self, prev_accel_constraint=True):
+    cost_mulitpliers = self.get_cost_multipliers()
+    a_change_cost = A_CHANGE_COST if prev_accel_constraint else 0
+    W = np.asfortranarray(np.diag([X_EGO_OBSTACLE_COST, X_EGO_COST, V_EGO_COST,
+                                   A_EGO_COST, a_change_cost * cost_mulitpliers[0],
+                                   J_EGO_COST * cost_mulitpliers[1]]))
     for i in range(N):
-      W[4,4] = A_CHANGE_COST * np.interp(T_IDXS[i], [0.0, 1.0, 2.0], [1.0, 1.0, 0.0])
+      # KRKeegan, decreased timescale to .5s since Toyota lag is set to .3s
+      W[4,4] = a_change_cost * cost_mulitpliers[0] * np.interp(T_IDXS[i], [0.0, 0.5, 2.0], [1.0, 1.0, 0.0])
       self.solver.cost_set(i, 'W', W)
     # Setting the slice without the copy make the array not contiguous,
     # causing issues with the C interface.
@@ -324,10 +338,9 @@ class LongitudinalMpc():
       self.desired_TF = new_TF
       self.set_weights()
 
-  def update(self, carstate, radarstate, v_cruise, prev_accel_constraint=False):
+  def update(self, carstate, radarstate, v_cruise):
     self.update_TF(carstate)
     v_ego = self.x0[1]
-    a_ego = self.x0[2]
     self.status = radarstate.leadOne.status or radarstate.leadTwo.status
 
     lead_xv_0 = self.process_lead(radarstate.leadOne)
@@ -355,10 +368,7 @@ class LongitudinalMpc():
     x_obstacles = np.column_stack([lead_0_obstacle, lead_1_obstacle, cruise_obstacle])
     self.source = SOURCES[np.argmin(x_obstacles[0])]
     self.params[:,2] = np.min(x_obstacles, axis=1)
-    if prev_accel_constraint:
-      self.params[:,3] = np.copy(self.prev_a)
-    else:
-      self.params[:,3] = a_ego
+    self.params[:,3] = np.copy(self.prev_a)
     self.params[:,4] = self.desired_TF
 
     self.run()
