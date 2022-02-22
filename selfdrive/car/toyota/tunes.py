@@ -119,7 +119,7 @@ def set_lat_tune(tune, name):
     elif name == LatTunes.PID_N:
       tune.pid.kpV = [0.35]
       tune.pid.kiV = [0.15]
-      tune.pid.kf = 0.00007818594
+      tune.pid.kf = 0.00006
     else:
       raise NotImplementedError('This PID tune does not exist')
   else:
