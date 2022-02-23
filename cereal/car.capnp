@@ -105,6 +105,11 @@ struct CarEvent @0x9b1657f34caf3ad3 {
     highCpuUsage @105;
     cruiseMismatch @106;
     lkasDisabled @107;
+    preKeepHandsOnWheel @108;
+    promptKeepHandsOnWheel @109;
+    keepHandsOnWheel @110;
+    speedLimitActive @111;
+    speedLimitValueChange @112;
 
     radarCanErrorDEPRECATED @15;
     communityFeatureDisallowedDEPRECATED @62;
@@ -197,7 +202,7 @@ struct CarState {
 
   # KRKeegan toyota distance lines
   distanceLines @39 :UInt8;
-
+  
   struct WheelSpeeds {
     # optional wheel speeds
     fl @0 :Float32;
@@ -213,6 +218,7 @@ struct CarState {
     speedOffset @3 :Float32;
     standstill @4 :Bool;
     nonAdaptive @5 :Bool;
+    speedLimit @6 :Float32;
   }
 
   enum GearShifter {
