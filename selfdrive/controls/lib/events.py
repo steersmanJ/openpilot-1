@@ -690,22 +690,6 @@ EVENTS: Dict[int, Dict[str, Union[Alert, AlertCallbackType]]] = {
     ET.NO_ENTRY: NoEntryAlert("System Overheated"),
   },
 
-  EventName.wrongGear: {
-    ET.WARNING: Alert(
-      "",
-      "",
-      AlertStatus.userPrompt, AlertSize.small,
-      Priority.LOW, VisualAlert.none, AudibleAlert.none, 0.),
-  },
-
-  EventName.silentWrongGear: {
-    ET.WARNING: Alert(
-      "",
-      "",
-      AlertStatus.userPrompt, AlertSize.small,
-      Priority.LOW, VisualAlert.none, AudibleAlert.none, 0.),
-  },
-
   # This alert is thrown when the calibration angles are outside of the acceptable range.
   # For example if the device is pointed too much to the left or the right.
   # Usually this can only be solved by removing the mount from the windshield completely,
