@@ -289,10 +289,10 @@ class CarState(CarStateBase):
     ]
 
     if CP.carFingerprint in TSS2_CAR:
-      signals.append(("ACC_TYPE", "ACC_CONTROL", 0))
-      checks.append(("ACC_CONTROL", 33))
+      signals.append(("ACC_TYPE", "ACC_CONTROL", 0)),
+      checks.append(("ACC_CONTROL", 33)),
 
       # KRKeegan - Add support for toyota distance button
-      signals.append(("DISTANCE", "ACC_CONTROL", 0))
+      signals.append(("DISTANCE", "ACC_CONTROL", 0)),
 
-    return CANParser(DBC[CP.carFingerprint]["pt"], signals, checks, 2)
+    return CANParser(DBC[CP.carFingerprint]["pt"], signals, checks, 2, enforce_checks=False)
