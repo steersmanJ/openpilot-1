@@ -94,8 +94,8 @@ class CarState(CarStateBase):
     ret.steeringRateDeg = cp.vl["STEER_ANGLE_SENSOR"]["STEER_RATE"]
 
     self.cruise_buttons = cp.vl["PCM_CRUISE"]["CRUISE_STATE"]
-    self.lkas_enabled = cp_cam.vl["LKAS_HUD"]["SET_ME_X01"] == 2
-    self.persistLkasIconDisabled = cp_cam.vl["LKAS_HUD"]["SET_ME_X01"] == 1
+    self.lkas_enabled = cp_cam.vl["LKAS_HUD"]["SET_ME_X01"]
+    self.persistLkasIconDisabled = cp_cam.vl["LKAS_HUD"]["SET_ME_X01"] == 0
 
     if self.prev_lkas_enabled is None:
       self.prev_lkas_enabled = self.lkas_enabled
@@ -143,11 +143,9 @@ class CarState(CarStateBase):
 
     if ret.cruiseState.available:
       if not self.disable_mads:
-        if self.prev_lkas_enabled != 2 and self.lkas_enabled == 2:
+        if not self.prev_lkas_enabled and self.lkas_enabled == 1: #1 == not LKAS button
           self.lkasEnabled = True
-        elif self.prev_lkas_enabled != 1 and self.lkas_enabled == 1:
-          self.lkasEnabled = False
-        elif self.prev_lkas_enabled != 0 and self.lkas_enabled == 0:
+        elif self.prev_lkas_enabled and self.lkas_enabled == 0:
           self.lkasEnabled = False
     else:
       self.lkasEnabled = False

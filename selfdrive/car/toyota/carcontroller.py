@@ -128,8 +128,15 @@ class CarController():
       # forcing the pcm to disengage causes a bad fault sound so play a good sound instead
       send_ui = True
 
+    if not self.has_set_lkas:
+      send_ui = True
+    if not CS.prev_lkas_enabled and CS.lkas_enabled == 1:
+      send_ui = True
+    elif CS.prev_lkas_enabled and CS.lkas_enabled == 0:
+      send_ui = True
+
     if CarControllerParams.FEATURE_NO_LKAS_ICON:
-      if CS.persistLkasIconDisabled == 1:
+      if CS.persistLkasIconDisabled == 0:
         self.has_set_lkas = True
 
       if (frame % 100 == 0 or send_ui):
