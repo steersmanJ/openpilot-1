@@ -140,7 +140,7 @@ class Alert:
 
 class NoEntryAlert(Alert):
   def __init__(self, alert_text_2, visual_alert=VisualAlert.none):
-    super().__init__("openpilot Unavailable", alert_text_2, AlertStatus.normal,
+    super().__init__("openpilot Unavailable", alert_text_2, AlertStatus.userPrompt,
                      AlertSize.mid, Priority.LOW, visual_alert,
                      AudibleAlert.refuse, 3.)
 
@@ -149,7 +149,7 @@ class SoftDisableAlert(Alert):
   def __init__(self, alert_text_2):
     super().__init__("TAKE CONTROL IMMEDIATELY", alert_text_2,
                      AlertStatus.userPrompt, AlertSize.full,
-                     Priority.MID, VisualAlert.steerRequired,
+                     Priority.MID, VisualAlert.none,
                      AudibleAlert.warningSoft, 2.),
 
 
@@ -164,14 +164,14 @@ class ImmediateDisableAlert(Alert):
   def __init__(self, alert_text_2):
     super().__init__("TAKE CONTROL IMMEDIATELY", alert_text_2,
                      AlertStatus.critical, AlertSize.full,
-                     Priority.HIGHEST, VisualAlert.steerRequired,
+                     Priority.HIGHEST, VisualAlert.none,
                      AudibleAlert.warningImmediate, 4.),
 
 
 class EngagementAlert(Alert):
   def __init__(self, audible_alert: car.CarControl.HUDControl.AudibleAlert):
     super().__init__("", "",
-                     AlertStatus.normal, AlertSize.none,
+                     AlertStatus.userPrompt, AlertSize.none,
                      Priority.MID, VisualAlert.none,
                      audible_alert, .2),
 
@@ -179,12 +179,12 @@ class EngagementAlert(Alert):
 class NormalPermanentAlert(Alert):
   def __init__(self, alert_text_1: str, alert_text_2: str = "", duration: float = 0.2, priority: Priority = Priority.LOWER, creation_delay: float = 0.):
     super().__init__(alert_text_1, alert_text_2,
-                     AlertStatus.normal, AlertSize.mid if len(alert_text_2) else AlertSize.small,
+                     AlertStatus.userPrompt, AlertSize.mid if len(alert_text_2) else AlertSize.small,
                      priority, VisualAlert.none, AudibleAlert.none, duration, creation_delay=creation_delay),
 
 
 class StartupAlert(Alert):
-  def __init__(self, alert_text_1: str, alert_text_2: str = "To use MADS, press the LKAS button", alert_status=AlertStatus.normal):
+  def __init__(self, alert_text_1: str, alert_text_2: str = "To use Autosteer, press the LKAS button.", alert_status=AlertStatus.userPrompt):
     super().__init__(alert_text_1, alert_text_2,
                      alert_status, AlertSize.mid,
                      Priority.LOWER, VisualAlert.none, AudibleAlert.none, 10.),
@@ -227,14 +227,14 @@ def below_steer_speed_alert(CP: car.CarParams, sm: messaging.SubMaster, metric: 
     f"Steer Unavailable Below {get_display_speed(CP.minSteerSpeed, metric)}",
     "",
     AlertStatus.userPrompt, AlertSize.small,
-    Priority.MID, VisualAlert.steerRequired, AudibleAlert.prompt, 0.4)
+    Priority.MID, VisualAlert.none, AudibleAlert.prompt, 0.4)
 
 
 def calibration_incomplete_alert(CP: car.CarParams, sm: messaging.SubMaster, metric: bool, soft_disable_time: int) -> Alert:
   return Alert(
     "Calibration in Progress: %d%%" % sm['liveCalibration'].calPerc,
     f"Drive Above {get_display_speed(MIN_SPEED_FILTER, metric)}",
-    AlertStatus.normal, AlertSize.mid,
+    AlertStatus.userPrompt, AlertSize.mid,
     Priority.LOWEST, VisualAlert.none, AudibleAlert.none, .2)
 
 
@@ -243,7 +243,7 @@ def no_gps_alert(CP: car.CarParams, sm: messaging.SubMaster, metric: bool, soft_
   return Alert(
     "Poor GPS reception",
     "If sky is visible, contact support" if gps_integrated else "Check GPS antenna placement",
-    AlertStatus.normal, AlertSize.mid,
+    AlertStatus.userPrompt, AlertSize.mid,
     Priority.LOWER, VisualAlert.none, AudibleAlert.none, .2, creation_delay=300.)
 
 
@@ -267,7 +267,7 @@ def speed_limit_adjust_alert(CP: car.CarParams, sm: messaging.SubMaster, metric:
   return Alert(
     message,
     "",
-    AlertStatus.normal, AlertSize.small,
+    AlertStatus.userPrompt, AlertSize.small,
     Priority.LOW, VisualAlert.none, AudibleAlert.none, 4.)
 
 
@@ -288,7 +288,7 @@ EVENTS: Dict[int, Dict[str, Union[Alert, AlertCallbackType]]] = {
   },
 
   EventName.startup: {
-    ET.PERMANENT: StartupAlert("sunnypilot Initialized")
+    ET.PERMANENT: StartupAlert("Welcome to Openpilot")
   },
 
   EventName.startupMaster: {
@@ -374,7 +374,7 @@ EVENTS: Dict[int, Dict[str, Union[Alert, AlertCallbackType]]] = {
     ET.PRE_ENABLE: Alert(
       "Release Gas Pedal to Engage",
       "",
-      AlertStatus.normal, AlertSize.small,
+      AlertStatus.userPrompt, AlertSize.small,
       Priority.LOWEST, VisualAlert.none, AudibleAlert.none, .1, creation_delay=1.),
   },
 
@@ -393,17 +393,17 @@ EVENTS: Dict[int, Dict[str, Union[Alert, AlertCallbackType]]] = {
 
   EventName.steerTempUnavailableSilent: {
     ET.WARNING: Alert(
-      "Steering Temporarily Unavailable",
-      "",
-      AlertStatus.userPrompt, AlertSize.small,
-      Priority.LOW, VisualAlert.steerRequired, AudibleAlert.prompt, 1.),
+      "Autosteer Temporarily Suspended",
+      "Steering override by driver.",
+      AlertStatus.userPrompt, AlertSize.mid,
+      Priority.LOW, VisualAlert.none, AudibleAlert.prompt, 1.),
   },
 
   EventName.preDriverDistracted: {
     ET.WARNING: Alert(
       "Pay Attention",
       "",
-      AlertStatus.normal, AlertSize.small,
+      AlertStatus.userPrompt, AlertSize.small,
       Priority.LOW, VisualAlert.none, AudibleAlert.none, .1),
   },
 
@@ -412,7 +412,7 @@ EVENTS: Dict[int, Dict[str, Union[Alert, AlertCallbackType]]] = {
       "Pay Attention",
       "Driver Distracted",
       AlertStatus.userPrompt, AlertSize.mid,
-      Priority.MID, VisualAlert.steerRequired, AudibleAlert.promptDistracted, .1),
+      Priority.MID, VisualAlert.none, AudibleAlert.promptDistracted, .1),
   },
 
   EventName.driverDistracted: {
@@ -420,15 +420,15 @@ EVENTS: Dict[int, Dict[str, Union[Alert, AlertCallbackType]]] = {
       "DISENGAGE IMMEDIATELY",
       "Driver Distracted",
       AlertStatus.critical, AlertSize.full,
-      Priority.HIGH, VisualAlert.steerRequired, AudibleAlert.warningImmediate, .1),
+      Priority.HIGH, VisualAlert.none, AudibleAlert.warningImmediate, .1),
   },
 
   EventName.preDriverUnresponsive: {
     ET.WARNING: Alert(
       "Touch Steering Wheel: No Face Detected",
       "",
-      AlertStatus.normal, AlertSize.small,
-      Priority.LOW, VisualAlert.steerRequired, AudibleAlert.none, .1, alert_rate=0.75),
+      AlertStatus.userPrompt, AlertSize.small,
+      Priority.LOW, VisualAlert.none, AudibleAlert.none, .1, alert_rate=0.75),
   },
 
   EventName.promptDriverUnresponsive: {
@@ -436,7 +436,7 @@ EVENTS: Dict[int, Dict[str, Union[Alert, AlertCallbackType]]] = {
       "Touch Steering Wheel",
       "Driver Unresponsive",
       AlertStatus.userPrompt, AlertSize.mid,
-      Priority.MID, VisualAlert.steerRequired, AudibleAlert.promptDistracted, .1),
+      Priority.MID, VisualAlert.none, AudibleAlert.promptDistracted, .1),
   },
 
   EventName.driverUnresponsive: {
@@ -444,7 +444,7 @@ EVENTS: Dict[int, Dict[str, Union[Alert, AlertCallbackType]]] = {
       "DISENGAGE IMMEDIATELY",
       "Driver Unresponsive",
       AlertStatus.critical, AlertSize.full,
-      Priority.HIGH, VisualAlert.steerRequired, AudibleAlert.warningImmediate, .1),
+      Priority.HIGH, VisualAlert.none, AudibleAlert.warningImmediate, .1),
   },
 
   EventName.preKeepHandsOnWheel: {
@@ -452,7 +452,7 @@ EVENTS: Dict[int, Dict[str, Union[Alert, AlertCallbackType]]] = {
       "No hands on steering wheel detected",
       "",
       AlertStatus.userPrompt, AlertSize.small,
-      Priority.MID, VisualAlert.steerRequired, AudibleAlert.none, .1, alert_rate=0.75),
+      Priority.MID, VisualAlert.none, AudibleAlert.none, .1, alert_rate=0.75),
   },
 
   EventName.promptKeepHandsOnWheel: {
@@ -460,7 +460,7 @@ EVENTS: Dict[int, Dict[str, Union[Alert, AlertCallbackType]]] = {
       "HANDS OFF STEERING WHEEL",
       "Place hands on steering wheel",
       AlertStatus.critical, AlertSize.mid,
-      Priority.MID, VisualAlert.steerRequired, AudibleAlert.promptDistracted, .1),
+      Priority.MID, VisualAlert.none, AudibleAlert.promptDistracted, .1),
   },
 
   EventName.keepHandsOnWheel: {
@@ -491,7 +491,7 @@ EVENTS: Dict[int, Dict[str, Union[Alert, AlertCallbackType]]] = {
     ET.WARNING: Alert(
       "Steer Left to Start Lane Change Once Safe",
       "",
-      AlertStatus.normal, AlertSize.small,
+      AlertStatus.userPrompt, AlertSize.small,
       Priority.LOW, VisualAlert.none, AudibleAlert.none, .1, alert_rate=0.75),
   },
 
@@ -499,7 +499,7 @@ EVENTS: Dict[int, Dict[str, Union[Alert, AlertCallbackType]]] = {
     ET.WARNING: Alert(
       "Steer Right to Start Lane Change Once Safe",
       "",
-      AlertStatus.normal, AlertSize.small,
+      AlertStatus.userPrompt, AlertSize.small,
       Priority.LOW, VisualAlert.none, AudibleAlert.none, .1, alert_rate=0.75),
   },
 
@@ -513,17 +513,17 @@ EVENTS: Dict[int, Dict[str, Union[Alert, AlertCallbackType]]] = {
 
   EventName.laneChange: {
     ET.WARNING: Alert(
-      "Changing Lanes",
-      "",
-      AlertStatus.normal, AlertSize.small,
+      "Automatically Changing Lanes",
+      "Check your surroundings.",
+      AlertStatus.userPrompt, AlertSize.mid,
       Priority.LOW, VisualAlert.none, AudibleAlert.none, .1),
   },
 
   EventName.manualSteeringRequired: {
     ET.WARNING: Alert(
-      "MADS is OFF",
+      "LKAS is OFF",
       "Manual Steering Required",
-      AlertStatus.normal, AlertSize.mid,
+      AlertStatus.userPrompt, AlertSize.mid,
       Priority.LOW, VisualAlert.none, AudibleAlert.disengage, 2.),
   },
 
@@ -531,16 +531,16 @@ EVENTS: Dict[int, Dict[str, Union[Alert, AlertCallbackType]]] = {
     ET.WARNING: Alert(
       "Smart/Adaptive Cruise Control is OFF",
       "Manual Gas/Brakes Required",
-      AlertStatus.normal, AlertSize.mid,
+      AlertStatus.userPrompt, AlertSize.mid,
       Priority.LOW, VisualAlert.none, AudibleAlert.none, 2.),
   },
 
   EventName.steerSaturated: {
     ET.WARNING: Alert(
-      "Take Control",
-      "Turn Exceeds Steering Limit",
+      "Steering Torque Limit Reached",
+      "You may need to assist the wheel.",
       AlertStatus.userPrompt, AlertSize.mid,
-      Priority.LOW, VisualAlert.steerRequired, AudibleAlert.promptRepeat, 1.),
+      Priority.LOW, VisualAlert.none, AudibleAlert.promptRepeat, 1.),
   },
 
   # Thrown when the fan is driven at >50% but is not rotating
@@ -569,7 +569,7 @@ EVENTS: Dict[int, Dict[str, Union[Alert, AlertCallbackType]]] = {
     ET.WARNING: Alert(
       "Cruise set to speed limit",
       "",
-      AlertStatus.normal, AlertSize.small,
+      AlertStatus.userPrompt, AlertSize.small,
       Priority.LOW, VisualAlert.none, AudibleAlert.none, 2.),
   },
 
@@ -591,7 +591,7 @@ EVENTS: Dict[int, Dict[str, Union[Alert, AlertCallbackType]]] = {
     ET.ENABLE: Alert(
       "",
       "",
-      AlertStatus.normal, AlertSize.none,
+      AlertStatus.userPrompt, AlertSize.none,
       Priority.MID, VisualAlert.none, AudibleAlert.none, .2),
   },
 
@@ -612,7 +612,7 @@ EVENTS: Dict[int, Dict[str, Union[Alert, AlertCallbackType]]] = {
     ET.USER_DISABLE: Alert(
       "",
       "",
-      AlertStatus.normal, AlertSize.none,
+      AlertStatus.userPrompt, AlertSize.none,
       Priority.MID, VisualAlert.none, AudibleAlert.none, .2),
     ET.NO_ENTRY: NoEntryAlert("Brake Hold Active"),
   },
@@ -632,7 +632,7 @@ EVENTS: Dict[int, Dict[str, Union[Alert, AlertCallbackType]]] = {
     ET.USER_DISABLE: Alert(
       "",
       "",
-      AlertStatus.normal, AlertSize.none,
+      AlertStatus.userPrompt, AlertSize.none,
       Priority.MID, VisualAlert.none, AudibleAlert.none, .2),
     ET.NO_ENTRY: NoEntryAlert("Pedal Pressed During Attempt",
                               visual_alert=VisualAlert.brakePressed),
@@ -649,8 +649,8 @@ EVENTS: Dict[int, Dict[str, Union[Alert, AlertCallbackType]]] = {
   },
 
   EventName.steerTempUnavailable: {
-    ET.SOFT_DISABLE: soft_disable_alert("Steering Temporarily Unavailable"),
-    ET.NO_ENTRY: NoEntryAlert("Steering Temporarily Unavailable"),
+    ET.SOFT_DISABLE: soft_disable_alert("Autosteer Temporarily Suspended"),
+    ET.NO_ENTRY: NoEntryAlert("Autosteer Temporarily Suspended"),
   },
 
   EventName.outOfSpace: {
@@ -666,7 +666,7 @@ EVENTS: Dict[int, Dict[str, Union[Alert, AlertCallbackType]]] = {
     ET.PERMANENT: Alert(
       "No Data from Device Sensors",
       "Reboot your Device",
-      AlertStatus.normal, AlertSize.mid,
+      AlertStatus.userPrompt, AlertSize.mid,
       Priority.LOWER, VisualAlert.none, AudibleAlert.none, .2, creation_delay=1.),
     ET.NO_ENTRY: NoEntryAlert("No Data from Device Sensors"),
   },
@@ -688,24 +688,6 @@ EVENTS: Dict[int, Dict[str, Union[Alert, AlertCallbackType]]] = {
     ET.PERMANENT: NormalPermanentAlert("System Overheated"),
     ET.SOFT_DISABLE: soft_disable_alert("System Overheated"),
     ET.NO_ENTRY: NoEntryAlert("System Overheated"),
-  },
-
-  EventName.wrongGear: {
-    ET.SOFT_DISABLE: user_soft_disable_alert("Gear not D"),
-    ET.NO_ENTRY: NoEntryAlert("Gear not D"),
-  },
-
-  EventName.silentWrongGear: {
-    ET.SOFT_DISABLE: Alert(
-      "Gear not D",
-      "openpilot Unavailable",
-      AlertStatus.normal, AlertSize.mid,
-      Priority.LOW, VisualAlert.none, AudibleAlert.none, 0., 2., 3.),
-    ET.NO_ENTRY: Alert(
-      "Gear not D",
-      "openpilot Unavailable",
-      AlertStatus.normal, AlertSize.mid,
-      Priority.LOW, VisualAlert.none, AudibleAlert.none, 0., 2., 3.),
   },
 
   # This alert is thrown when the calibration angles are outside of the acceptable range.
@@ -846,7 +828,7 @@ EVENTS: Dict[int, Dict[str, Union[Alert, AlertCallbackType]]] = {
     ET.PERMANENT: Alert(
       "CAN Error: Check Connections",
       "",
-      AlertStatus.normal, AlertSize.small,
+      AlertStatus.userPrompt, AlertSize.small,
       Priority.LOW, VisualAlert.none, AudibleAlert.none, 1., creation_delay=1.),
     ET.NO_ENTRY: NoEntryAlert("CAN Error: Check Connections"),
   },
@@ -867,7 +849,7 @@ EVENTS: Dict[int, Dict[str, Union[Alert, AlertCallbackType]]] = {
     ET.PERMANENT: Alert(
       "Reverse\nGear",
       "",
-      AlertStatus.normal, AlertSize.full,
+      AlertStatus.userPrompt, AlertSize.full,
       Priority.LOWEST, VisualAlert.none, AudibleAlert.none, .2, creation_delay=0.5),
     ET.USER_DISABLE: ImmediateDisableAlert("Reverse Gear"),
     ET.NO_ENTRY: NoEntryAlert("Reverse Gear"),
@@ -901,7 +883,7 @@ EVENTS: Dict[int, Dict[str, Union[Alert, AlertCallbackType]]] = {
     ET.IMMEDIATE_DISABLE: Alert(
       "openpilot Canceled",
       "No close lead car",
-      AlertStatus.normal, AlertSize.mid,
+      AlertStatus.userPrompt, AlertSize.mid,
       Priority.HIGH, VisualAlert.none, AudibleAlert.disengage, 3.),
     ET.NO_ENTRY: NoEntryAlert("No Close Lead Car"),
   },
@@ -910,7 +892,7 @@ EVENTS: Dict[int, Dict[str, Union[Alert, AlertCallbackType]]] = {
     ET.IMMEDIATE_DISABLE: Alert(
       "openpilot Canceled",
       "Speed too low",
-      AlertStatus.normal, AlertSize.mid,
+      AlertStatus.userPrompt, AlertSize.mid,
       Priority.HIGH, VisualAlert.none, AudibleAlert.disengage, 3.),
   },
 
@@ -920,7 +902,7 @@ EVENTS: Dict[int, Dict[str, Union[Alert, AlertCallbackType]]] = {
       "Speed Too High",
       "Model uncertain at this speed",
       AlertStatus.userPrompt, AlertSize.mid,
-      Priority.HIGH, VisualAlert.steerRequired, AudibleAlert.promptRepeat, 4.),
+      Priority.HIGH, VisualAlert.none, AudibleAlert.promptRepeat, 4.),
     ET.NO_ENTRY: NoEntryAlert("Slow down to engage"),
   },
 
