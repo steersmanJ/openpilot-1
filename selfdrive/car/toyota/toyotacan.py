@@ -76,7 +76,7 @@ def create_ui_command(packer, steer, chime, left_line, right_line, left_lane_dep
     "SET_ME_X2C": 0x2c,
     "SET_ME_X38": 0x38,
     "SET_ME_X02": 0x02,
-    "SET_ME_X01": 2,
+    "SET_ME_X01": 1,
     "SET_ME_X01_2": 1,
     "REPEATED_BEEPS": 0,
     "TWO_BEEPS": chime,
@@ -103,6 +103,17 @@ def create_ui_command_off(packer):
 
 def create_ui_command_disable_startup_lkas(packer):
   values = {
+    "RIGHT_LINE": 0,
+    "LEFT_LINE": 0,
+    "BARRIERS" : 0,
+    "SET_ME_X0C": 0x0a,
+    "SET_ME_X2C": 0x34,
+    "SET_ME_X38": 0x00,
+    "SET_ME_X02": 0x12,
     "SET_ME_X01": 0, # LKAS not enabled
+    "SET_ME_X01_2": 1,
+    "REPEATED_BEEPS": 0,
+    "TWO_BEEPS": 0,
+    "LDA_ALERT": 0,
   }
   return packer.make_can_msg("LKAS_HUD", 0, values)

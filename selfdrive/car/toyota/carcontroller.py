@@ -130,9 +130,9 @@ class CarController():
 
     if not self.has_set_lkas:
       send_ui = True
-    if not CS.prev_lkas_enabled and CS.lkas_enabled:
+    if not CS.prev_lkas_enabled and CS.lkas_enabled == 1:
       send_ui = True
-    elif CS.prev_lkas_enabled == 1 and not CS.lkas_enabled:
+    elif CS.prev_lkas_enabled and CS.lkas_enabled == 0:
       send_ui = True
 
     if CarControllerParams.FEATURE_NO_LKAS_ICON:
