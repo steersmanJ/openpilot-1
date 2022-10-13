@@ -130,7 +130,7 @@ class LateralPlanner:
     lateralPlan.solverExecutionTime = self.lat_mpc.solve_time
 
     lateralPlan.desire = self.DH.desire
-    lateralPlan.useLaneLines = self.use_lanelines
+    lateralPlan.useLaneLines = False
     lateralPlan.laneChangeState = self.DH.lane_change_state
     lateralPlan.laneChangeDirection = self.DH.lane_change_direction
 
