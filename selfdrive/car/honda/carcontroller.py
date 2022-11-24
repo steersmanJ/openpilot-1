@@ -155,10 +155,13 @@ class CarController():
       if (frame % 10) == 0:
         can_sends.append((0x18DAB0F1, 0, b"\x02\x3E\x80\x00\x00\x00\x00\x00", 1))
 
+    lateral_active = CC.enabled if self.CP.minSteerSpeed > 0. else CC.latActive
+
     # Send steering command.
     idx = frame % 4
-    can_sends.append(hondacan.create_steering_control(self.packer, apply_steer,
-      lkas_active, CS.CP.carFingerprint, idx, CS.CP.openpilotLongitudinalControl))
+    can_sends.append(hondacan.create_steering_control(self.packer, apply_steer, lateral_active, self.CP.carFingerprint, CS.CP.openpilotLongitudinalControl))
+    # can_sends.append(hondacan.create_steering_control(self.packer, apply_steer,
+    #  lkas_active, CS.CP.carFingerprint, idx, CS.CP.openpilotLongitudinalControl))
 
     stopping = actuators.longControlState == LongCtrlState.stopping
     starting = actuators.longControlState == LongCtrlState.starting
