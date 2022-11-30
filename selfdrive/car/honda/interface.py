@@ -3,7 +3,7 @@ from cereal import car
 from panda import Panda
 from common.numpy_fast import interp
 from common.params import Params
-from selfdrive.car.honda.values import CarControllerParams, CruiseButtons, CruiseSetting, HondaFlags, CAR, HONDA_BOSCH, HONDA_NIDEC_ALT_SCM_MESSAGES, HONDA_BOSCH_ALT_BRAKE_SIGNAL
+from selfdrive.car.honda.values import CarControllerParams, CruiseButtons, CruiseSetting, HondaFlags, CAR, HONDA_BOSCH, HONDA_NIDEC_ALT_SCM_MESSAGES, HONDA_BOSCH_ALT_BRAKE_SIGNAL, HONDA_BOSCH_RADARLESS, STEER_LIMITING_RADAR
 from common.realtime import DT_CTRL
 from selfdrive.controls.lib.events import ET
 from selfdrive.car import STD_CARGO_KG, CivicParams, scale_rot_inertia, scale_tire_stiffness, gen_empty_fingerprint, get_safety_config
@@ -97,7 +97,9 @@ class CarInterface(CarInterfaceBase):
     for fw in car_fw:
       if fw.ecu == "eps" and b"," in fw.fwVersion:
         eps_modified = True
-
+      if fw.ecu == "fwdRadar" and fw.fwVersion in STEER_LIMITING_RADAR and not ret.openpilotLongitudinalControl:
+        ret.minSteerSpeed = 36.5 * CV.MPH_TO_MS
+        
     if candidate == CAR.CIVIC:
       stop_and_go = True
       ret.mass = CivicParams.MASS
