@@ -4,7 +4,7 @@ from panda import Panda
 from common.conversions import Conversions as CV
 from common.numpy_fast import interp
 from common.params import Params
-from selfdrive.car.honda.values import CarControllerParams, CruiseButtons, HondaFlags, CAR, HONDA_BOSCH, HONDA_NIDEC_ALT_SCM_MESSAGES, HONDA_BOSCH_ALT_BRAKE_SIGNAL, HONDA_BOSCH_RADARLESS
+from selfdrive.car.honda.values import CarControllerParams, CruiseButtons, HondaFlags, CAR, HONDA_BOSCH, HONDA_NIDEC_ALT_SCM_MESSAGES, HONDA_BOSCH_ALT_BRAKE_SIGNAL, HONDA_BOSCH_RADARLESS, STEER_LIMITING_RADAR
 from selfdrive.car import STD_CARGO_KG, CivicParams, create_button_event, scale_rot_inertia, scale_tire_stiffness, gen_empty_fingerprint, get_safety_config
 from selfdrive.car.interfaces import CarInterfaceBase
 from selfdrive.car.disable_ecu import disable_ecu
@@ -85,6 +85,8 @@ class CarInterface(CarInterfaceBase):
     for fw in car_fw:
       if fw.ecu == "eps" and b"," in fw.fwVersion:
         eps_modified = True
+      if fw.ecu == "fwdRadar" and fw.fwVersion in STEER_LIMITING_RADAR and not ret.openpilotLongitudinalControl:
+        ret.minSteerSpeed = 36.5 * CV.MPH_TO_MS
 
     if candidate == CAR.CIVIC:
       ret.mass = CivicParams.MASS
