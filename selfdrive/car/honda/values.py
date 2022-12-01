@@ -93,6 +93,11 @@ class CAR:
   INSIGHT = "HONDA INSIGHT 2019"
   HONDA_E = "HONDA E 2020"
 
+  class Footnote(Enum):
+  STEER_LIMITING_RADAR = CarFootnote(
+    "Stock LKAS limitations apply when used with Stock ACC, including minimum speed and active windshield wiper mode.",
+    Column.FSR_STEERING)
+  
 FW_VERSIONS = {
   CAR.ACCORD: {
     (Ecu.programmedFuelInjection, 0x18da10f1, None): [
@@ -1400,6 +1405,8 @@ FW_VERSIONS = {
     ],
   },
 }
+# Bosch radar with these firmware IDs limit steering availability to the same vehicle conditions as the factory LKAS (i.e. speed and wiper mode).
+STEER_LIMITING_RADAR = [b'36802-THR-A220\x00\x00', b'36802-TJB-A540\x00\x00']
 
 DBC = {
   CAR.ACCORD: dbc_dict('honda_accord_2018_can_generated', None),
